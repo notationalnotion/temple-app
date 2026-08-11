@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>Temple</title>
+<meta name="theme-color" content="#F7F3EC">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Temple">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bone:#F7F3EC; --surface:#FCFAF6; --tint:#EFEDE8; --wash:#EDEFF2;
+  --ink:#252220; --ink2:#453F38; --mute:#7E766B; --line:#E4DDD2; --line2:#D6CDBF;
+  --bronze:#A98545; --bronze-wash:#F2EADB;
+  --slate:#4C5C70; --slate-wash:#F1F3F6;
+  --brick:#96543F;
+  --display:"Cormorant Garamond",Georgia,serif;
+  --body:"EB Garamond",Georgia,serif;
+  --ui:"Jost",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-t:env(safe-area-inset-top,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bone);color:var(--ink);font-family:var(--body);
+  font-size:17px;line-height:1.55;overscroll-behavior-y:contain;
+  padding-bottom:calc(94px + var(--safe-b));
+  -webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:1.5px solid var(--slate);outline-offset:3px}
+.micro{font-family:var(--ui);font-weight:400;font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase}
+
+/* ---------------- masthead ---------------- */
+.bar{position:sticky;top:0;z-index:30;background:rgba(247,243,236,.93);
+  backdrop-filter:blur(14px);padding:calc(14px + var(--safe-t)) 20px 0}
+.bar-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.wordmark{font-family:var(--display);font-weight:300;font-size:29px;letter-spacing:.3em;
+  text-transform:uppercase;line-height:1;margin-left:.3em}
+.tagline{font-family:var(--ui);font-weight:300;font-size:9.5px;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--mute);margin-top:6px}
+.weekpick{display:flex;align-items:center;flex:none}
+.weekpick button{width:30px;height:36px;font-family:var(--display);font-size:21px;
+  font-weight:300;color:var(--ink2);line-height:1}
+.weekpick button:disabled{opacity:.2}
+.weeklabel{font-family:var(--ui);font-weight:400;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;min-width:60px;text-align:center;color:var(--ink2)}
+.days{display:flex;gap:22px;margin-top:15px;padding-bottom:1px}
+.daytab{padding:0 0 12px;background:none;border-bottom:1px solid transparent;text-align:left}
+.daytab .d{font-family:var(--ui);font-weight:400;font-size:10.5px;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--mute);display:block}
+.daytab .n{display:block;font-family:var(--display);font-weight:400;font-size:16px;
+  color:var(--mute);margin-top:1px;letter-spacing:.01em}
+.daytab[aria-selected="true"]{border-bottom-color:var(--ink)}
+.daytab[aria-selected="true"] .d{color:var(--ink2)}
+.daytab[aria-selected="true"] .n{color:var(--ink)}
+.dots{display:flex;gap:3px;margin-top:5px}
+.dots i{width:14px;height:1.5px;background:var(--line2)}
+.dots i.on{background:var(--bronze)}
+.dots i.knee.on{background:var(--slate)}
+.hairline{height:1px;background:var(--line)}
+
+.wrap{padding:22px 20px 0;max-width:620px;margin:0 auto}
+.view[hidden]{display:none}
+
+/* ---------------- collapsible notes ---------------- */
+.note{border-bottom:1px solid var(--line)}
+.note:first-of-type{border-top:1px solid var(--line)}
+.note summary{list-style:none;cursor:pointer;padding:14px 2px;display:flex;
+  justify-content:space-between;align-items:center;color:var(--ink)}
+.note summary::-webkit-details-marker{display:none}
+.note summary::after{content:"";width:7px;height:7px;border-right:1px solid var(--mute);
+  border-bottom:1px solid var(--mute);transform:rotate(45deg);margin-right:3px;
+  transition:transform .2s}
+.note[open] summary::after{transform:rotate(-135deg)}
+.note ul{margin:0 0 18px;padding:0;list-style:none;font-size:16.5px;line-height:1.7;
+  color:var(--ink)}
+.note li{padding-left:16px;position:relative}
+.note li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:1px;
+  background:var(--bronze)}
+.note li em{font-style:italic;font-weight:500}
+
+/* ---------------- section label ---------------- */
+.seclabel{margin:26px 0 13px;color:var(--mute)}
+
+/* ---------------- exercise cards ---------------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:5px;
+  margin-bottom:9px;overflow:hidden}
+.card.knee{background:var(--slate-wash);border-color:#E1E6EB}
+.card.done{opacity:.42}
+.card-head{padding:16px 17px 0}
+.eyebrow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:6px}
+.tag{font-family:var(--ui);font-weight:400;font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--bronze)}
+.knee .tag{color:var(--slate)}
+.target{font-family:var(--ui);font-weight:300;font-size:10px;letter-spacing:.09em;
+  color:var(--mute);text-align:right;white-space:nowrap}
+.exname{font-family:var(--display);font-weight:500;font-size:22px;line-height:1.2;
+  margin:0;letter-spacing:.005em}
+.cue{font-size:15.5px;color:var(--ink2);margin:7px 0 0;line-height:1.45}
+.cbody{padding:0 17px 16px}
+
+.loadrow{display:flex;align-items:center;gap:12px;margin:16px 0 15px}
+.step{width:46px;height:46px;background:transparent;border:1px solid var(--line2);
+  border-radius:50%;font-family:var(--ui);font-weight:300;font-size:20px;color:var(--ink2);
+  display:flex;align-items:center;justify-content:center;flex:none;line-height:1}
+.step:active{background:var(--bronze-wash);border-color:var(--bronze)}
+.loadval{flex:1;text-align:center;min-width:0}
+.loadval button{font-family:var(--ui);font-weight:300;font-size:40px;line-height:1;
+  letter-spacing:.01em;width:100%;padding:2px 0;font-variant-numeric:tabular-nums}
+.loadval .unit{font-family:var(--ui);font-size:13px;font-weight:300;color:var(--mute);
+  margin-left:5px;letter-spacing:.06em}
+.loadval .last{display:block;font-family:var(--ui);font-weight:300;font-size:9.5px;
+  color:var(--mute);letter-spacing:.13em;margin-top:7px;text-transform:uppercase}
+.vow{margin:14px 0 15px;font-size:15.5px;font-style:italic;color:#3D4A5C;
+  line-height:1.4;text-align:center}
+
+.sets{display:flex;gap:8px}
+.setbtn{flex:1;height:54px;background:transparent;border:1px solid var(--line2);
+  border-radius:4px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;position:relative;overflow:hidden;
+  transition:background .18s,border-color .18s}
+.knee .setbtn{border-color:#D8DFE6}
+.setbtn .lab{font-family:var(--ui);font-weight:300;font-size:9px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--mute);position:relative;z-index:2}
+.setbtn .val{font-family:var(--ui);font-weight:400;font-size:15px;position:relative;z-index:2;
+  letter-spacing:.03em}
+.setbtn.on{background:var(--bronze);border-color:var(--bronze);color:var(--surface)}
+.setbtn.on .lab{color:rgba(252,250,246,.76)}
+.knee .setbtn.on{background:var(--slate);border-color:var(--slate);color:var(--surface)}
+.knee .setbtn.on .lab{color:rgba(252,250,246,.74)}
+.setbtn .fill{position:absolute;left:0;bottom:0;width:100%;height:0;z-index:1;
+  background:rgba(93,110,132,.13)}
+.setbtn.running{border-color:var(--slate)}
+.setbtn.running .val{color:var(--slate)}
+
+/* ---------------- knee feel ---------------- */
+.feel{margin:28px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
+.feel h3{font-family:var(--display);font-weight:400;font-size:24px;margin:0 0 5px;
+  letter-spacing:.01em}
+.feel p{margin:0 0 16px;font-size:15.5px;color:var(--ink2);line-height:1.45}
+.scale{display:flex;gap:8px}
+.scale button{flex:1;height:52px;background:transparent;border:1px solid var(--line2);
+  border-radius:4px;font-family:var(--ui);font-weight:300;font-size:18px;color:var(--ink2)}
+.scale button[aria-pressed="true"]{background:var(--slate);border-color:var(--slate);
+  color:var(--surface);font-weight:400}
+.scalekey{display:flex;justify-content:space-between;color:var(--mute);margin-top:9px;
+  font-size:9px;letter-spacing:.13em}
+
+/* ---------------- rest ---------------- */
+.rest{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(252,250,246,.97);
+  backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  padding:13px 20px calc(13px + var(--safe-b));display:flex;align-items:center;gap:13px;
+  transform:translateY(105%);transition:transform .28s ease}
+.rest.up{transform:translateY(0)}
+.rest .t{font-family:var(--ui);font-weight:300;font-size:30px;min-width:74px;
+  font-variant-numeric:tabular-nums}
+.rest .lb{flex:1;font-size:15px;color:var(--ink2);line-height:1.25;font-style:italic}
+.rest .act{padding:10px 14px;border:1px solid var(--line2);border-radius:4px;
+  font-family:var(--ui);font-weight:300;font-size:10px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ink2)}
+
+/* ---------------- nav ---------------- */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:35;display:flex;
+  background:rgba(247,243,236,.95);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);padding-bottom:var(--safe-b)}
+.nav button{flex:1;padding:16px 0 18px;font-family:var(--ui);font-weight:300;font-size:10px;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--mute);position:relative}
+.nav button[aria-current="page"]{color:var(--ink)}
+.nav button[aria-current="page"]::after{content:"";position:absolute;left:50%;top:8px;
+  width:16px;height:1px;background:var(--ink);transform:translateX(-50%)}
+
+/* ---------------- records ---------------- */
+.grid{width:100%;border-collapse:collapse}
+.grid th{font-family:var(--ui);font-weight:300;font-size:9px;letter-spacing:.12em;
+  color:var(--mute);padding:0 0 10px;text-align:center;text-transform:uppercase}
+.grid th.lift{text-align:left;width:42%}
+.grid td{padding:11px 0;text-align:center;border-top:1px solid var(--line);
+  font-family:var(--ui);font-weight:300;font-size:13px;color:var(--ink2);
+  font-variant-numeric:tabular-nums}
+.grid td.lift{text-align:left;font-family:var(--body);font-size:16px;color:var(--ink);
+  padding-right:10px;line-height:1.25}
+.grid td.best{color:var(--bronze);font-weight:500}
+.grid td.feel{color:var(--slate);font-weight:500}
+.empty{font-size:16px;color:var(--ink2);line-height:1.55;font-style:italic;padding:2px 0 6px}
+.tools{display:flex;gap:8px;margin:14px 0 14px;flex-wrap:wrap}
+.tools button{padding:12px 16px;border:1px solid var(--line2);border-radius:4px;
+  font-family:var(--ui);font-weight:300;font-size:10px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ink2)}
+.tools button.danger{color:var(--brick);border-color:#E0CCC4}
+.foot{font-size:15px;color:var(--ink2);line-height:1.55;margin:2px 0 26px}
+.colophon{color:var(--mute);text-align:center;padding:16px 0 26px;
+  border-top:1px solid var(--line);font-size:9px;letter-spacing:.2em}
+.toast{position:fixed;left:50%;bottom:calc(84px + var(--safe-b));transform:translate(-50%,12px);
+  background:var(--ink);color:var(--bone);font-family:var(--ui);font-weight:300;font-size:10px;
+  letter-spacing:.15em;text-transform:uppercase;padding:12px 18px;border-radius:4px;
+  z-index:60;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-top">
+    <div>
+      <div class="wordmark">Temple</div>
+      <div class="tagline">For strength and hypermobility</div>
+    </div>
+    <div class="weekpick">
+      <button id="wprev" aria-label="Previous week">&lsaquo;</button>
+      <div class="weeklabel" id="wlabel">Week 1</div>
+      <button id="wnext" aria-label="Next week">&rsaquo;</button>
+    </div>
+  </div>
+  <div class="days" role="tablist" id="daytabs"></div>
+  <div class="hairline"></div>
+</header>
+
+<main>
+  <section class="view wrap" id="view-train">
+
+    <details class="note">
+      <summary><span class="micro">Warm-up &middot; six minutes</span></summary>
+      <ul>
+        <li>Calf raises &mdash; 2 &times; 15</li>
+        <li>Glute bridges &mdash; 2 &times; 12, slow</li>
+        <li>Banded lateral steps &mdash; 2 &times; 15 each way</li>
+        <li>Banded terminal knee extension &mdash; 1 &times; 15 each leg</li>
+        <li>Band pull-apart &mdash; 2 &times; 15</li>
+      </ul>
+    </details>
+
+    <details class="note">
+      <summary><span class="micro">The four rules</span></summary>
+      <ul>
+        <li><em>Never lock out.</em> Knees or elbows, stop just shy of straight.</li>
+        <li><em>Lower slowly.</em> Three seconds down on everything.</li>
+        <li><em>No weight on the knee work.</em> It grows by seconds and depth.</li>
+        <li><em>Earn depth.</em> You can reach positions you cannot yet control.</li>
+      </ul>
+    </details>
+
+    <div class="micro seclabel" id="daylabel">The work</div>
+    <div id="cards"></div>
+
+    <div class="feel">
+      <h3>The day after</h3>
+      <p>Come back tomorrow and mark how the knees felt. This is the number that decides whether you progress or hold.</p>
+      <div class="scale" id="scale"></div>
+      <div class="scalekey micro"><span>1 &middot; loose</span><span>5 &middot; solid</span></div>
+    </div>
+  </section>
+
+  <section class="view wrap" id="view-history" hidden>
+    <div class="micro seclabel" style="margin-top:4px">Main lifts &middot; top set</div>
+    <div id="liftgrid"></div>
+    <div class="micro seclabel">Knee feel by week</div>
+    <div id="feelgrid"></div>
+    <div class="micro seclabel">Your records</div>
+    <div class="tools">
+      <button id="export">Export backup</button>
+      <button id="import">Restore backup</button>
+      <button id="wipe" class="danger">Erase everything</button>
+    </div>
+    <p class="foot">Everything is kept on this phone alone &mdash; nothing is sent anywhere. Export a backup every few weeks: browsers clear storage for apps left unopened.</p>
+    <div class="colophon micro">Temple &middot; not medical advice</div>
+    <input type="file" id="file" accept="application/json,.json" hidden>
+  </section>
+</main>
+
+<div class="rest" id="rest">
+  <div class="t" id="restT">0:00</div>
+  <div class="lb" id="restL">Rest</div>
+  <button class="act" id="restAdd">+30s</button>
+  <button class="act" id="restSkip">Skip</button>
+</div>
+
+<nav class="nav">
+  <button id="nav-train" aria-current="page">Practice</button>
+  <button id="nav-history">Records</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+/* ============================ program ============================ */
+const PROGRAM = [
+  { id:"A", name:"Squat & push", ex:[
+    {id:"a1", n:"Spanish squat", t:"knee", m:"time", sets:2, tgt:"30 sec", secs:30, cue:"Band behind the knees, shins vertical, hips back."},
+    {id:"a2", n:"Goblet or front squat", t:"strength", m:"load", sets:4, tgt:"6-8 reps", cue:"Three seconds down. Soft knees at the top."},
+    {id:"a3", n:"Dumbbell bench or floor press", t:"strength", m:"load", sets:4, tgt:"8 reps", cue:"Stop just shy of lockout, elbows 45 degrees from the ribs."},
+    {id:"a4", n:"Chest-supported row", t:"strength", m:"load", sets:3, tgt:"10 reps", cue:"Ribs down, no shrug at the top."},
+    {id:"a5", n:"Romanian deadlift", t:"strength", m:"load", sets:3, tgt:"8 reps", cue:"Stop at mid-shin. Hamstrings, not lower back."},
+    {id:"a6", n:"Half-kneeling overhead press", t:"strength", m:"load", sets:3, tgt:"8 reps", cue:"No rib flare, no elbow lockout."},
+    {id:"a7", n:"Eccentric step-down", t:"knee", m:"reps", sets:2, tgt:"6 each leg", cue:"Four seconds down. Knee tracks over the mid-foot."},
+    {id:"a8", n:"Farmer's carry", t:"strength", m:"load", sets:3, tgt:"40 m", cue:"Tall posture, shoulders packed down."},
+  ]},
+  { id:"B", name:"Hinge & pull", ex:[
+    {id:"b1", n:"Wall sit", t:"knee", m:"time", sets:2, tgt:"45 sec", secs:45, cue:"Knees near 90 degrees, weight into the heels."},
+    {id:"b2", n:"Trap bar or dumbbell deadlift", t:"strength", m:"load", sets:4, tgt:"6 reps", cue:"Hips and shoulders rise together."},
+    {id:"b3", n:"Lat pulldown or assisted pull-up", t:"strength", m:"load", sets:4, tgt:"8 reps", cue:"Control the return. Soft elbows at the bottom."},
+    {id:"b4", n:"Incline dumbbell press", t:"strength", m:"load", sets:3, tgt:"10 reps", cue:"Elbows 45 degrees from the ribs, no lockout."},
+    {id:"b5", n:"Hip thrust", t:"strength", m:"load", sets:3, tgt:"10 reps", cue:"Two-second squeeze at the top, ribs down."},
+    {id:"b6", n:"Split squat", t:"knee", m:"reps", sets:3, tgt:"8 each leg", cue:"Rear foot on the floor. Partial depth, front shin vertical."},
+    {id:"b7", n:"Copenhagen plank", t:"strength", m:"time", sets:2, tgt:"20 sec each side", secs:20, cue:"Knee on a bench. Stop before the adductor cramps."},
+    {id:"b8", n:"Pallof press", t:"strength", m:"reps", sets:3, tgt:"10 each side", cue:"Resist the twist, do not create one."},
+  ]},
+  { id:"C", name:"Single leg", ex:[
+    {id:"c1", n:"Banded terminal knee extension", t:"knee", m:"reps", sets:2, tgt:"15 each leg", cue:"Straighten to a soft lockout only."},
+    {id:"c2", n:"Loaded step-up or Bulgarian split squat", t:"strength", m:"load", sets:4, tgt:"8 each leg", cue:"Three seconds down, no push-off from the back leg."},
+    {id:"c3", n:"Single-leg RDL", t:"knee", m:"reps", sets:3, tgt:"8 each leg", cue:"Fingertips on a wall. Hips square, standing knee soft."},
+    {id:"c4", n:"Weighted push-up or dumbbell press", t:"strength", m:"load", sets:3, tgt:"10 reps", cue:"Soft elbows at the top."},
+    {id:"c5", n:"Single-arm dumbbell row", t:"strength", m:"load", sets:3, tgt:"10 each side", cue:"No twisting through the trunk."},
+    {id:"c6", n:"Face pull", t:"strength", m:"load", sets:3, tgt:"15 reps", cue:"High elbows, slow return."},
+    {id:"c7", n:"Hamstring curl or bridge walkout", t:"strength", m:"reps", sets:3, tgt:"8 reps", cue:"Hips stay high throughout."},
+    {id:"c8", n:"Suitcase carry", t:"strength", m:"load", sets:3, tgt:"30 m each side", cue:"Do not lean. Stay stacked."},
+  ]},
+];
+const MAIN_LIFTS = ["a2","a3","a5","b2","b3","b5","c2"];
+const WEEKS = 8, KEY = "temple.v1", OLD_KEY = "twospeeds.v1";
+
+/* ============================ state ============================ */
+const blank = { week:1, day:"A", unit:"kg", load:{}, sets:{}, feel:{} };
+let S = load();
+
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY) || localStorage.getItem(OLD_KEY);
+    if(!raw) return structuredClone(blank);
+    return Object.assign(structuredClone(blank), JSON.parse(raw));
+  }catch(e){ return structuredClone(blank); }
+}
+let saveWarned = false;
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(S)); }
+  catch(e){ if(!saveWarned){ saveWarned = true; toast("Storage blocked"); } }
+}
+const lk = (w,e) => "w" + w + "|" + e;
+const day = () => PROGRAM.find(d => d.id === S.day);
+
+function lastLoad(exId, beforeWeek){
+  for(let w = beforeWeek - 1; w >= 1; w--){
+    const v = S.load[lk(w,exId)];
+    if(typeof v === "number") return { w:w, v:v };
+  }
+  return null;
+}
+
+/* ============================ render ============================ */
+const $ = id => document.getElementById(id);
+
+function renderTabs(){
+  const host = $("daytabs");
+  host.innerHTML = "";
+  PROGRAM.forEach(d => {
+    const b = document.createElement("button");
+    b.className = "daytab"; b.setAttribute("role","tab");
+    b.setAttribute("aria-selected", d.id === S.day);
+    const marks = d.ex.map(e => {
+      const done = (S.sets[lk(S.week, e.id)] || []).filter(Boolean).length >= e.sets;
+      return '<i class="' + (e.t === "knee" ? "knee " : "") + (done ? "on" : "") + '"></i>';
+    }).join("");
+    b.innerHTML = '<span class="d">Day ' + d.id + '</span><span class="n">' + d.name + '</span>'
+                + '<span class="dots">' + marks + '</span>';
+    b.onclick = () => { S.day = d.id; save(); renderAll(); window.scrollTo({top:0}); };
+    host.appendChild(b);
+  });
+  $("wlabel").textContent = "Week " + S.week;
+  $("wprev").disabled = S.week <= 1;
+  $("wnext").disabled = S.week >= WEEKS;
+  $("daylabel").textContent = "Day " + S.day;
+}
+
+function renderCards(){
+  const host = $("cards");
+  host.innerHTML = "";
+  day().ex.forEach(e => {
+    const key = lk(S.week, e.id);
+    const done = S.sets[key] || [];
+    const complete = done.filter(Boolean).length >= e.sets;
+    const knee = e.t === "knee";
+    const card = document.createElement("article");
+    card.className = "card" + (knee ? " knee" : "") + (complete ? " done" : "");
+
+    let ctrl = "";
+    if(e.m === "load"){
+      const cur = S.load[key];
+      const prev = lastLoad(e.id, S.week);
+      const lastTxt = prev ? ("last " + prev.v + " " + S.unit + " \u00b7 week " + prev.w)
+                           : "no weight recorded yet";
+      ctrl = '<div class="loadrow">'
+        + '<button class="step" data-act="minus" data-ex="' + e.id + '" aria-label="Less weight">\u2212</button>'
+        + '<div class="loadval">'
+        + '<button data-act="type" data-ex="' + e.id + '" aria-label="Type a weight">'
+        + (cur === undefined ? "\u2014" : cur) + '<span class="unit">' + S.unit + '</span></button>'
+        + '<span class="last">' + lastTxt + '</span></div>'
+        + '<button class="step" data-act="plus" data-ex="' + e.id + '" aria-label="More weight">+</button>'
+        + '</div>';
+    } else if(knee){
+      ctrl = '<div class="vow">No weight here. This one grows by seconds, depth and steadiness.</div>';
+    }
+
+    let chips = "";
+    for(let i = 0; i < e.sets; i++){
+      const on = !!done[i];
+      const label = e.m === "time" ? (on ? "held" : e.secs + "s") : ("Set " + (i+1));
+      const val = e.m === "time" ? (on ? "\u2713" : "Start") : (on ? "\u2713" : "\u2013");
+      chips += '<button class="setbtn' + (on ? " on" : "") + '" data-act="set" data-ex="'
+             + e.id + '" data-i="' + i + '"><span class="fill"></span>'
+             + '<span class="lab">' + label + '</span><span class="val">' + val + '</span></button>';
+    }
+
+    card.innerHTML = '<div class="card-head"><div class="eyebrow">'
+      + '<span class="tag">' + (knee ? "Steadiness" : "Strength") + '</span>'
+      + '<span class="target">' + e.sets + ' \u00d7 ' + e.tgt + '</span></div>'
+      + '<h2 class="exname">' + e.n + '</h2>'
+      + '<p class="cue">' + e.cue + '</p></div>'
+      + '<div class="cbody">' + ctrl + '<div class="sets">' + chips + '</div></div>';
+    host.appendChild(card);
+  });
+
+  const f = S.feel["w" + S.week + "|" + S.day];
+  $("scale").innerHTML = [1,2,3,4,5].map(n =>
+    '<button data-feel="' + n + '" aria-pressed="' + (f === n) + '">' + n + '</button>').join("");
+}
+
+function renderHistory(){
+  const weeks = Array.from({length:WEEKS}, (_,i) => i+1);
+  const rows = MAIN_LIFTS.map(id => {
+    const ex = PROGRAM.reduce((a,d) => a.concat(d.ex), []).find(x => x.id === id);
+    const vals = weeks.map(w => S.load[lk(w,id)]);
+    const nums = vals.filter(v => typeof v === "number");
+    return { ex:ex, vals:vals, best: nums.length ? Math.max.apply(null, nums) : null };
+  });
+  const any = rows.some(r => r.best !== null);
+  $("liftgrid").innerHTML = !any
+    ? '<p class="empty">Nothing recorded yet. Weights entered during practice gather here, week by week, so you can see whether the number is truly moving.</p>'
+    : '<table class="grid"><thead><tr><th class="lift">Lift</th>'
+      + weeks.map(w => '<th>' + w + '</th>').join("") + '<th>Best</th></tr></thead><tbody>'
+      + rows.map(r => '<tr><td class="lift">' + r.ex.n.split(" or ")[0] + '</td>'
+          + r.vals.map(v => '<td>' + (v === undefined ? "\u00b7" : v) + '</td>').join("")
+          + '<td class="best">' + (r.best === null ? "\u00b7" : r.best) + '</td></tr>').join("")
+      + '</tbody></table>';
+
+  const feelRows = weeks.map(w => {
+    const per = PROGRAM.map(d => S.feel["w" + w + "|" + d.id]);
+    const got = per.filter(v => typeof v === "number");
+    return { w:w, per:per, avg: got.length ? got.reduce((a,b) => a+b, 0) / got.length : null };
+  });
+  const anyFeel = feelRows.some(r => r.avg !== null);
+  $("feelgrid").innerHTML = !anyFeel
+    ? '<p class="empty">Mark how the knees felt the day after each session and the average settles here. A week that dips asks you to cut range, not to push harder.</p>'
+    : '<table class="grid"><thead><tr><th class="lift">Week</th><th>A</th><th>B</th><th>C</th><th>Avg</th></tr></thead><tbody>'
+      + feelRows.map(r => '<tr><td class="lift">Week ' + r.w + '</td>'
+          + r.per.map(v => '<td>' + (v === undefined ? "\u00b7" : v) + '</td>').join("")
+          + '<td class="feel">' + (r.avg === null ? "\u00b7" : r.avg.toFixed(1)) + '</td></tr>').join("")
+      + '</tbody></table>';
+}
+
+function renderAll(){ renderTabs(); renderCards(); renderHistory(); }
+
+/* ============================ interaction ============================ */
+document.addEventListener("click", ev => {
+  unlockAudio();
+  const t = ev.target.closest("[data-act], [data-feel]");
+  if(!t) return;
+
+  if(t.dataset.feel){
+    const k = "w" + S.week + "|" + S.day;
+    const n = Number(t.dataset.feel);
+    S.feel[k] = S.feel[k] === n ? undefined : n;
+    save(); renderCards(); renderHistory();
+    return;
+  }
+
+  const ex = day().ex.find(x => x.id === t.dataset.ex);
+  const key = lk(S.week, ex.id);
+  const act = t.dataset.act;
+
+  if(act === "plus" || act === "minus"){
+    const prev = lastLoad(ex.id, S.week);
+    const cur = S.load[key] !== undefined ? S.load[key] : (prev ? prev.v : 0);
+    S.load[key] = Math.max(0, Math.round((cur + (act === "plus" ? 2.5 : -2.5)) * 2) / 2);
+    save(); renderCards();
+    return;
+  }
+
+  if(act === "type"){
+    const raw = window.prompt("Weight for " + ex.n + " (" + S.unit + ")",
+                              S.load[key] === undefined ? "" : S.load[key]);
+    if(raw === null) return;
+    const n = parseFloat(String(raw).replace(",", "."));
+    S.load[key] = isNaN(n) ? undefined : Math.max(0, n);
+    save(); renderCards();
+    return;
+  }
+
+  if(act === "set"){
+    const i = Number(t.dataset.i);
+    const arr = S.sets[key] || (S.sets[key] = []);
+    if(arr[i]){ arr[i] = false; save(); renderAll(); return; }
+    if(ex.m === "time" && !t.classList.contains("running")){ runHold(t, ex, key, i); return; }
+    arr[i] = true; save(); renderAll();
+    startRest(ex);
+  }
+});
+
+/* hold timer */
+let holdTimer = null;
+function runHold(btn, ex, key, i){
+  if(holdTimer){ clearInterval(holdTimer); holdTimer = null; renderCards(); return; }
+  let left = ex.secs;
+  btn.classList.add("running");
+  const fill = btn.querySelector(".fill");
+  const val = btn.querySelector(".val");
+  const lab = btn.querySelector(".lab");
+  lab.textContent = "holding";
+  const tick = () => {
+    val.textContent = left;
+    fill.style.height = (100 * (ex.secs - left) / ex.secs) + "%";
+    if(left <= 0){
+      clearInterval(holdTimer); holdTimer = null;
+      chime();
+      const arr = S.sets[key] || (S.sets[key] = []);
+      arr[i] = true; save(); renderAll(); startRest(ex);
+      return;
+    }
+    left--;
+  };
+  tick();
+  holdTimer = setInterval(tick, 1000);
+}
+
+/* rest timer */
+let restTimer = null, restLeft = 0;
+function startRest(ex){
+  restLeft = ex.t === "knee" ? 60 : 120;
+  $("restL").textContent = ex.t === "knee" ? "A short rest \u2014 steadiness work"
+                                           : "Rest before the next set";
+  $("rest").classList.add("up");
+  if(restTimer) clearInterval(restTimer);
+  paintRest();
+  restTimer = setInterval(() => {
+    restLeft--; paintRest();
+    if(restLeft <= 0){ endRest(); chime(); }
+  }, 1000);
+}
+function paintRest(){
+  const m = Math.floor(Math.max(0,restLeft) / 60), s = Math.max(0,restLeft) % 60;
+  $("restT").textContent = m + ":" + String(s).padStart(2,"0");
+}
+function endRest(){
+  if(restTimer) clearInterval(restTimer);
+  restTimer = null;
+  $("rest").classList.remove("up");
+}
+$("restSkip").onclick = endRest;
+$("restAdd").onclick = () => { restLeft += 30; paintRest(); };
+
+/* two soft tones */
+let ac = null;
+function unlockAudio(){
+  try{
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    if(ac.state === "suspended") ac.resume();
+  }catch(e){}
+}
+function chime(){
+  try{
+    unlockAudio();
+    [[528,0],[792,0.16]].forEach(pair => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      const t0 = ac.currentTime + pair[1];
+      o.type = "sine"; o.frequency.value = pair[0];
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.2, t0 + 0.04);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.6);
+      o.connect(g); g.connect(ac.destination);
+      o.start(t0); o.stop(t0 + 1.7);
+    });
+  }catch(e){}
+  if(navigator.vibrate) navigator.vibrate(180);
+}
+
+/* week + nav */
+$("wprev").onclick = () => { if(S.week > 1){ S.week--; save(); renderAll(); } };
+$("wnext").onclick = () => { if(S.week < WEEKS){ S.week++; save(); renderAll(); } };
+function show(v){
+  $("view-train").hidden = v !== "train";
+  $("view-history").hidden = v !== "history";
+  $("nav-train").setAttribute("aria-current", v === "train" ? "page" : "false");
+  $("nav-history").setAttribute("aria-current", v === "history" ? "page" : "false");
+  window.scrollTo({top:0});
+}
+$("nav-train").onclick = () => show("train");
+$("nav-history").onclick = () => { renderHistory(); show("history"); };
+
+/* backup */
+$("export").onclick = () => {
+  const blob = new Blob([JSON.stringify(S, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "temple-backup-" + new Date().toISOString().slice(0,10) + ".json";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+  toast("Backup downloaded");
+};
+$("import").onclick = () => $("file").click();
+$("file").onchange = e => {
+  const f = e.target.files[0];
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      S = Object.assign(structuredClone(blank), JSON.parse(r.result));
+      save(); renderAll(); toast("Backup restored");
+    }catch(err){ toast("That file could not be read"); }
+  };
+  r.readAsText(f);
+  e.target.value = "";
+};
+$("wipe").onclick = () => {
+  if(!confirm("Erase every recorded set, weight and score? This cannot be undone.")) return;
+  S = structuredClone(blank); save(); renderAll(); toast("All records erased");
+};
+
+let toastT = null;
+function toast(msg){
+  const el = $("toast");
+  el.textContent = msg; el.classList.add("show");
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove("show"), 2200);
+}
+
+if("serviceWorker" in navigator && location.protocol === "https:"){
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+
+renderAll();
+</script>
+</body>
+</html>
