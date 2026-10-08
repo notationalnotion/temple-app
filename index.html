@@ -55,8 +55,8 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .weekpick button:disabled{opacity:.2}
 .weeklabel{font-family:var(--ui);font-weight:400;font-size:10px;letter-spacing:.16em;
   text-transform:uppercase;min-width:60px;text-align:center;color:var(--ink2)}
-.days{display:flex;gap:22px;margin-top:15px;padding-bottom:1px}
-.daytab{padding:0 0 12px;background:none;border-bottom:1px solid transparent;text-align:left}
+.days{display:flex;gap:18px;margin-top:15px;padding-bottom:1px}
+.daytab{flex:1;min-width:0;padding:0 0 12px;background:none;border-bottom:1px solid transparent;text-align:left}
 .daytab .d{font-family:var(--ui);font-weight:400;font-size:10.5px;letter-spacing:.17em;
   text-transform:uppercase;color:var(--mute);display:block}
 .daytab .n{display:block;font-family:var(--display);font-weight:400;font-size:16px;
@@ -65,7 +65,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .daytab[aria-selected="true"] .d{color:var(--ink2)}
 .daytab[aria-selected="true"] .n{color:var(--ink)}
 .dots{display:flex;gap:3px;margin-top:5px}
-.dots i{width:14px;height:1.5px;background:var(--line2)}
+.dots i{flex:1;max-width:14px;height:1.5px;background:var(--line2)}
 .dots i.on{background:var(--bronze)}
 .dots i.knee.on{background:var(--slate)}
 .hairline{height:1px;background:var(--line)}
@@ -157,6 +157,21 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .scalekey{display:flex;justify-content:space-between;color:var(--mute);margin-top:9px;
   font-size:9px;letter-spacing:.13em}
 
+.scalename{color:var(--mute);margin:20px 0 9px}
+.feel p + .scalename{margin-top:0}
+
+/* ---------------- phase ---------------- */
+.phase{margin:0 0 20px}
+.phase .micro{color:var(--bronze)}
+.phase h3{font-family:var(--display);font-weight:400;font-size:27px;margin:5px 0 5px;
+  letter-spacing:.01em;line-height:1.15}
+.phase p{margin:0;font-size:15.5px;color:var(--ink2);line-height:1.45}
+.vow:empty{margin:14px 0 0}
+.fort{display:flex;gap:4px}
+.fort i{flex:1;height:24px;border:1px solid var(--line2);border-radius:2px}
+.fort i.part{background:var(--slate-wash);border-color:#C9D2DC}
+.fort i.full{background:var(--slate);border-color:var(--slate)}
+
 /* ---------------- rest ---------------- */
 .rest{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(252,250,246,.97);
   backdrop-filter:blur(14px);border-top:1px solid var(--line);
@@ -230,24 +245,44 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 <main>
   <section class="view wrap" id="view-train">
 
+    <div class="phase">
+      <div class="micro" id="phaseweeks">Phase 1 of 3</div>
+      <h3 id="phasename">Re-entry</h3>
+      <p id="phasenote"></p>
+    </div>
+
     <details class="note">
-      <summary><span class="micro">Warm-up &middot; six minutes</span></summary>
+      <summary><span class="micro">Warm-up &middot; eight minutes</span></summary>
       <ul>
         <li>Calf raises &mdash; 2 &times; 15</li>
         <li>Glute bridges &mdash; 2 &times; 12, slow</li>
         <li>Banded lateral steps &mdash; 2 &times; 15 each way</li>
         <li>Banded terminal knee extension &mdash; 1 &times; 15 each leg</li>
         <li>Band pull-apart &mdash; 2 &times; 15</li>
+        <li>Chin nods &mdash; 1 &times; 8, five-second holds</li>
+        <li>Wall slides &mdash; 1 &times; 10</li>
       </ul>
     </details>
 
     <details class="note">
-      <summary><span class="micro">The four rules</span></summary>
+      <summary><span class="micro">The rules</span></summary>
       <ul>
         <li><em>Never lock out.</em> Knees or elbows, stop just shy of straight.</li>
         <li><em>Lower slowly.</em> Three seconds down on everything.</li>
         <li><em>No weight on the knee work.</em> It grows by seconds and depth.</li>
         <li><em>Earn depth.</em> You can reach positions you cannot yet control.</li>
+        <li><em>Keep breathing.</em> Out on the effort. No held breath, no grinding reps.</li>
+        <li><em>No shrug.</em> Shoulders stay away from the ears on every lift and carry.</li>
+        <li><em>One change at a time.</em> More weight, more reps or a new movement, never two at once.</li>
+        <li><em>Hold when it talks back.</em> A day-after score of 2 or lower, or a headache after training, means repeat the week at last week&rsquo;s weights.</li>
+      </ul>
+    </details>
+
+    <details class="note">
+      <summary><span class="micro">Stop signs</span></summary>
+      <ul>
+        <li><em>End the session</em> for a headache that builds as you lift, new neck pain, dizziness or a change in vision.</li>
+        <li><em>Get emergency care</em> for a sudden severe headache, neck pain unlike your usual, a drooping face, weakness, numbness or trouble speaking.</li>
       </ul>
     </details>
 
@@ -256,17 +291,60 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 
     <div class="feel">
       <h3>The day after</h3>
-      <p>Come back tomorrow and mark how the knees felt. This is the number that decides whether you progress or hold.</p>
+      <p>Come back tomorrow and mark both. These are the numbers that decide whether you progress or hold.</p>
+      <div class="micro scalename">Knees</div>
       <div class="scale" id="scale"></div>
       <div class="scalekey micro"><span>1 &middot; loose</span><span>5 &middot; solid</span></div>
+      <div class="micro scalename">Head and neck</div>
+      <div class="scale" id="scaleHead"></div>
+      <div class="scalekey micro"><span>1 &middot; headache</span><span>5 &middot; clear</span></div>
     </div>
   </section>
 
+  <section class="view wrap" id="view-daily" hidden>
+    <div class="phase">
+      <div class="micro" id="dailydate"></div>
+      <h3>Neck and posture</h3>
+      <p>Five minutes, every day, gym or not. Gentle enough that you could do it twice.</p>
+    </div>
+
+    <details class="note">
+      <summary><span class="micro">Desk, couch and bed</span></summary>
+      <ul>
+        <li><em>Screen at eye level.</em> A laptop stand and a separate keyboard at the desk.</li>
+        <li><em>Couch or bed.</em> A lap desk, a pillow behind the low back, thirty minutes at a time.</li>
+        <li><em>Move often.</em> Stand and walk every 30 to 45 minutes. A changed position beats a perfect one.</li>
+      </ul>
+    </details>
+
+    <details class="note">
+      <summary><span class="micro">Leave these out</span></summary>
+      <ul>
+        <li>Neck circles and hard ear-to-shoulder stretches.</li>
+        <li>Anyone cracking or manipulating your neck.</li>
+        <li>Stretching tight traps for relief. They want strength under them, not a longer stretch.</li>
+        <li>Headstands, shoulder stands and loaded neck positions.</li>
+      </ul>
+    </details>
+
+    <div class="micro seclabel">Today</div>
+    <div id="dailycards"></div>
+  </section>
+
   <section class="view wrap" id="view-history" hidden>
+    <div class="phase">
+      <div class="micro">Records follow the week you have selected</div>
+      <h3 id="histphase">Re-entry</h3>
+    </div>
     <div class="micro seclabel" style="margin-top:4px">Main lifts &middot; top set</div>
     <div id="liftgrid"></div>
     <div class="micro seclabel">Knee feel by week</div>
     <div id="feelgrid"></div>
+    <div class="micro seclabel">Head and neck by week</div>
+    <div id="headgrid"></div>
+    <div class="micro seclabel">Daily practice &middot; last fourteen days</div>
+    <div class="fort" id="fort"></div>
+    <div class="scalekey micro"><span>Two weeks ago</span><span>Today</span></div>
     <div class="micro seclabel">Your records</div>
     <div class="tools">
       <button id="export">Export backup</button>
@@ -288,6 +366,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 
 <nav class="nav">
   <button id="nav-train" aria-current="page">Practice</button>
+  <button id="nav-daily">Daily</button>
   <button id="nav-history">Records</button>
 </nav>
 
@@ -297,50 +376,74 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 "use strict";
 
 /* ============================ program ============================ */
+/* rx = [sets, target, seconds] for each of the three phases; null = not in that phase */
+const PHASES = [
+  { name:"Re-entry", from:1, to:4,
+    note:"Loads that feel almost too easy, with three or four reps left in hand on every set. Hold the same weights for the first two weeks. After that, take the smallest step on one or two lifts a session." },
+  { name:"Build", from:5, to:12,
+    note:"Add the smallest step once every set reaches the top of its rep range and both day-after scores were 4 or 5. Keep two reps in hand." },
+  { name:"Strength", from:13, to:20,
+    note:"Heavier and fewer reps on the main lifts. Start this phase only if Build passed without a flare. One or two reps in hand, never a grind, and breathe out through every lift." },
+];
 const PROGRAM = [
   { id:"A", name:"Squat & push", ex:[
-    {id:"a1", n:"Spanish squat", t:"knee", m:"time", sets:2, tgt:"30 sec", secs:30, cue:"Band behind the knees, shins vertical, hips back."},
-    {id:"a2", n:"Goblet or front squat", t:"strength", m:"load", sets:4, tgt:"6-8 reps", cue:"Three seconds down. Soft knees at the top."},
-    {id:"a3", n:"Dumbbell bench or floor press", t:"strength", m:"load", sets:4, tgt:"8 reps", cue:"Stop just shy of lockout, elbows 45 degrees from the ribs."},
-    {id:"a4", n:"Chest-supported row", t:"strength", m:"load", sets:3, tgt:"10 reps", cue:"Ribs down, no shrug at the top."},
-    {id:"a5", n:"Romanian deadlift", t:"strength", m:"load", sets:3, tgt:"8 reps", cue:"Stop at mid-shin. Hamstrings, not lower back."},
-    {id:"a6", n:"Half-kneeling overhead press", t:"strength", m:"load", sets:3, tgt:"8 reps", cue:"No rib flare, no elbow lockout."},
-    {id:"a7", n:"Eccentric step-down", t:"knee", m:"reps", sets:2, tgt:"6 each leg", cue:"Four seconds down. Knee tracks over the mid-foot."},
-    {id:"a8", n:"Farmer's carry", t:"strength", m:"load", sets:3, tgt:"40 m", cue:"Tall posture, shoulders packed down."},
+    {id:"a1", n:"Spanish squat", t:"knee", m:"time", rx:[[2,"20 sec",20],[2,"30 sec",30],[2,"45 sec",45]], cue:"Band behind the knees, shins vertical, hips back."},
+    {id:"a2", n:"Goblet or front squat", t:"strength", m:"load", rx:[[2,"10 reps"],[3,"8-10 reps"],[4,"6-8 reps"]], cue:"Three seconds down. Soft knees at the top. Sit to a box until the depth is yours."},
+    {id:"a3", n:"Dumbbell bench or floor press", t:"strength", m:"load", rx:[[2,"10-12 reps"],[3,"8-10 reps"],[4,"6-8 reps"]], cue:"Stop just shy of lockout, elbows 45 degrees from the ribs. Head heavy on the bench."},
+    {id:"a4", n:"Chest-supported row", t:"strength", m:"load", rx:[[2,"12 reps"],[3,"10 reps"],[4,"8 reps"]], cue:"Ribs down, no shrug at the top. Eyes on the floor, neck long."},
+    {id:"a5", n:"Romanian deadlift", t:"strength", m:"load", rx:[[2,"10 reps"],[3,"8-10 reps"],[3,"6-8 reps"]], cue:"Stop at mid-shin. Hamstrings, not lower back. Chin tucked, not looking up."},
+    {id:"a9", n:"Half-kneeling landmine press", t:"strength", m:"load", rx:[[2,"10 each side"],[3,"8 each side"],null], cue:"Press up and forward, no rib flare, no shrug toward the ear."},
+    {id:"a6", n:"Half-kneeling overhead press", t:"strength", m:"load", rx:[null,null,[3,"8 reps"]], cue:"No rib flare, no elbow lockout. If the neck tightens, go back to the landmine."},
+    {id:"a10", n:"Prone Y raise", t:"neck", m:"reps", rx:[[2,"8 reps"],[2,"10 reps"],[3,"10 reps"]], cue:"Face down on an incline bench. Thumbs up, shoulder blades down and back, forehead resting."},
+    {id:"a7", n:"Eccentric step-down", t:"knee", m:"reps", rx:[[2,"5 each leg"],[2,"6 each leg"],[3,"6 each leg"]], cue:"Four seconds down. Knee tracks over the mid-foot."},
+    {id:"a8", n:"Farmer's carry", t:"strength", m:"load", rx:[[2,"30 m"],[3,"40 m"],[3,"40 m"]], cue:"Tall posture, shoulders packed down. Light enough that the neck stays quiet."},
   ]},
   { id:"B", name:"Hinge & pull", ex:[
-    {id:"b1", n:"Wall sit", t:"knee", m:"time", sets:2, tgt:"45 sec", secs:45, cue:"Knees near 90 degrees, weight into the heels."},
-    {id:"b2", n:"Trap bar or dumbbell deadlift", t:"strength", m:"load", sets:4, tgt:"6 reps", cue:"Hips and shoulders rise together."},
-    {id:"b3", n:"Lat pulldown or assisted pull-up", t:"strength", m:"load", sets:4, tgt:"8 reps", cue:"Control the return. Soft elbows at the bottom."},
-    {id:"b4", n:"Incline dumbbell press", t:"strength", m:"load", sets:3, tgt:"10 reps", cue:"Elbows 45 degrees from the ribs, no lockout."},
-    {id:"b5", n:"Hip thrust", t:"strength", m:"load", sets:3, tgt:"10 reps", cue:"Two-second squeeze at the top, ribs down."},
-    {id:"b6", n:"Split squat", t:"knee", m:"reps", sets:3, tgt:"8 each leg", cue:"Rear foot on the floor. Partial depth, front shin vertical."},
-    {id:"b7", n:"Copenhagen plank", t:"strength", m:"time", sets:2, tgt:"20 sec each side", secs:20, cue:"Knee on a bench. Stop before the adductor cramps."},
-    {id:"b8", n:"Pallof press", t:"strength", m:"reps", sets:3, tgt:"10 each side", cue:"Resist the twist, do not create one."},
+    {id:"b1", n:"Wall sit", t:"knee", m:"time", rx:[[2,"30 sec",30],[2,"45 sec",45],[2,"60 sec",60]], cue:"Knees near 90 degrees, weight into the heels."},
+    {id:"b2", n:"Trap bar or dumbbell deadlift", t:"strength", m:"load", rx:[[2,"8 reps"],[3,"6-8 reps"],[4,"5-6 reps"]], cue:"Hips and shoulders rise together. Breathe out through the lift."},
+    {id:"b3", n:"Lat pulldown or assisted pull-up", t:"strength", m:"load", rx:[[2,"10-12 reps"],[3,"8-10 reps"],[4,"6-8 reps"]], cue:"Shoulders down before you pull. Control the return, never hang on straight elbows."},
+    {id:"b4", n:"Incline dumbbell press", t:"strength", m:"load", rx:[[2,"12 reps"],[3,"10 reps"],[3,"8 reps"]], cue:"Elbows 45 degrees from the ribs, no lockout."},
+    {id:"b5", n:"Hip thrust", t:"strength", m:"load", rx:[[2,"12 reps"],[3,"10 reps"],[4,"8 reps"]], cue:"Two-second squeeze at the top, ribs down, chin tucked."},
+    {id:"b9", n:"Seated cable row", t:"strength", m:"load", rx:[[2,"12 reps"],[3,"10 reps"],[3,"8 reps"]], cue:"Tall spine, pull to the lower ribs. Do not reach forward at the end."},
+    {id:"b6", n:"Split squat", t:"knee", m:"reps", rx:[[2,"6 each leg"],[3,"8 each leg"],[3,"8 each leg"]], cue:"Rear foot on the floor. Partial depth, front shin vertical."},
+    {id:"b7", n:"Copenhagen plank", t:"strength", m:"time", rx:[[2,"10 sec each side",10],[2,"20 sec each side",20],[2,"30 sec each side",30]], cue:"Knee on a bench. Stop before the adductor cramps."},
+    {id:"b8", n:"Pallof press", t:"strength", m:"reps", rx:[[2,"8 each side"],[3,"10 each side"],[3,"10 each side"]], cue:"Resist the twist, do not create one."},
   ]},
   { id:"C", name:"Single leg", ex:[
-    {id:"c1", n:"Banded terminal knee extension", t:"knee", m:"reps", sets:2, tgt:"15 each leg", cue:"Straighten to a soft lockout only."},
-    {id:"c2", n:"Loaded step-up or Bulgarian split squat", t:"strength", m:"load", sets:4, tgt:"8 each leg", cue:"Three seconds down, no push-off from the back leg."},
-    {id:"c3", n:"Single-leg RDL", t:"knee", m:"reps", sets:3, tgt:"8 each leg", cue:"Fingertips on a wall. Hips square, standing knee soft."},
-    {id:"c4", n:"Weighted push-up or dumbbell press", t:"strength", m:"load", sets:3, tgt:"10 reps", cue:"Soft elbows at the top."},
-    {id:"c5", n:"Single-arm dumbbell row", t:"strength", m:"load", sets:3, tgt:"10 each side", cue:"No twisting through the trunk."},
-    {id:"c6", n:"Face pull", t:"strength", m:"load", sets:3, tgt:"15 reps", cue:"High elbows, slow return."},
-    {id:"c7", n:"Hamstring curl or bridge walkout", t:"strength", m:"reps", sets:3, tgt:"8 reps", cue:"Hips stay high throughout."},
-    {id:"c8", n:"Suitcase carry", t:"strength", m:"load", sets:3, tgt:"30 m each side", cue:"Do not lean. Stay stacked."},
+    {id:"c1", n:"Banded terminal knee extension", t:"knee", m:"reps", rx:[[2,"15 each leg"],[2,"15 each leg"],[2,"20 each leg"]], cue:"Straighten to a soft lockout only."},
+    {id:"c2", n:"Loaded step-up or Bulgarian split squat", t:"strength", m:"load", rx:[[2,"8 each leg"],[3,"8 each leg"],[4,"6-8 each leg"]], cue:"Three seconds down, no push-off from the back leg. Step-ups first, split squats once they are steady."},
+    {id:"c3", n:"Single-leg RDL", t:"knee", m:"reps", rx:[[2,"6 each leg"],[3,"8 each leg"],[3,"8 each leg"]], cue:"Fingertips on a wall. Hips square, standing knee soft."},
+    {id:"c4", n:"Push-up or dumbbell press", t:"strength", m:"load", rx:[[2,"10 reps"],[3,"10 reps"],[3,"8 reps"]], cue:"Soft elbows at the top. Hands raised on a bench until full push-ups are clean."},
+    {id:"c5", n:"Single-arm dumbbell row", t:"strength", m:"load", rx:[[2,"12 each side"],[3,"10 each side"],[4,"8 each side"]], cue:"No twisting through the trunk, no shrug."},
+    {id:"c6", n:"Face pull", t:"strength", m:"load", rx:[[2,"15 reps"],[3,"15 reps"],[3,"12 reps"]], cue:"High elbows, slow return. Chin stays back."},
+    {id:"c7", n:"Hamstring curl or bridge walkout", t:"strength", m:"reps", rx:[[2,"8 reps"],[3,"8 reps"],[3,"10 reps"]], cue:"Hips stay high throughout."},
+    {id:"c9", n:"Dead bug", t:"neck", m:"reps", rx:[[2,"6 each side"],[3,"8 each side"],[3,"8 each side"]], cue:"Low back heavy on the floor, head resting. Breathe out as the arm and leg reach."},
+    {id:"c8", n:"Suitcase carry", t:"strength", m:"load", rx:[[2,"20 m each side"],[3,"30 m each side"],[3,"30 m each side"]], cue:"Do not lean. Stay stacked."},
   ]},
 ];
+/* five minutes, every day, gym or not */
+const DAILY = [
+  {id:"n1", daily:true, n:"Chin nod", t:"neck", m:"reps", sets:2, tgt:"5 reps, 5-second holds", cue:"Lying down, head resting. A small yes nod that lengthens the back of the neck. Nothing strains."},
+  {id:"n2", daily:true, n:"Neck isometrics", t:"neck", m:"time", sets:4, tgt:"10 sec", secs:10, labs:["Front","Back","Left","Right"], cue:"Press the head into your hand at a quarter of your effort. Nothing moves."},
+  {id:"n3", daily:true, n:"Wall slide", t:"neck", m:"reps", sets:2, tgt:"10 reps", cue:"Forearms on the wall, slide up with the ribs down. Shoulders stay away from the ears."},
+  {id:"n4", daily:true, n:"Upper-back extension over a roller", t:"neck", m:"reps", sets:1, tgt:"8 slow reps", cue:"Roller under the shoulder blades, hands cradling the head. Bend the upper back only, not the neck or the low back."},
+];
 const MAIN_LIFTS = ["a2","a3","a5","b2","b3","b5","c2"];
-const WEEKS = 8, KEY = "temple.v1", OLD_KEY = "twospeeds.v1";
+const WEEKS = 20, KEY = "temple.v2", OLD_KEY = "temple.v1";
 
 /* ============================ state ============================ */
-const blank = { week:1, day:"A", unit:"kg", load:{}, sets:{}, feel:{} };
+const blank = { week:1, day:"A", unit:"kg", load:{}, sets:{}, feel:{}, head:{} };
 let S = load();
 
 function load(){
   try{
-    const raw = localStorage.getItem(KEY) || localStorage.getItem(OLD_KEY);
-    if(!raw) return structuredClone(blank);
-    return Object.assign(structuredClone(blank), JSON.parse(raw));
+    const raw = localStorage.getItem(KEY);
+    if(raw) return Object.assign(structuredClone(blank), JSON.parse(raw));
+    /* the earlier eight-week plan stays untouched under its own key; only the unit carries over */
+    const fresh = structuredClone(blank);
+    const old = localStorage.getItem(OLD_KEY);
+    if(old){ const u = JSON.parse(old).unit; if(u) fresh.unit = u; }
+    return fresh;
   }catch(e){ return structuredClone(blank); }
 }
 let saveWarned = false;
@@ -349,7 +452,16 @@ function save(){
   catch(e){ if(!saveWarned){ saveWarned = true; toast("Storage blocked"); } }
 }
 const lk = (w,e) => "w" + w + "|" + e;
-const day = () => PROGRAM.find(d => d.id === S.day);
+const phaseIx = w => Math.max(0, PHASES.findIndex(p => w >= p.from && w <= p.to));
+const resolve = (e,p) => e.rx[p] ? Object.assign({}, e, {sets:e.rx[p][0], tgt:e.rx[p][1], secs:e.rx[p][2]}) : null;
+const exFor = (d,w) => d.ex.map(e => resolve(e, phaseIx(w))).filter(Boolean);
+const dayEx = () => exFor(PROGRAM.find(d => d.id === S.day), S.week);
+function dateKey(back){
+  const d = new Date(); d.setDate(d.getDate() - (back || 0));
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+const keyFor = (e, back) => e.daily ? "d" + dateKey(back) + "|" + e.id : lk(S.week, e.id);
+const findEx = id => dayEx().concat(DAILY).find(x => x.id === id);
 
 function lastLoad(exId, beforeWeek){
   for(let w = beforeWeek - 1; w >= 1; w--){
@@ -369,76 +481,115 @@ function renderTabs(){
     const b = document.createElement("button");
     b.className = "daytab"; b.setAttribute("role","tab");
     b.setAttribute("aria-selected", d.id === S.day);
-    const marks = d.ex.map(e => {
+    const marks = exFor(d, S.week).map(e => {
       const done = (S.sets[lk(S.week, e.id)] || []).filter(Boolean).length >= e.sets;
-      return '<i class="' + (e.t === "knee" ? "knee " : "") + (done ? "on" : "") + '"></i>';
+      return '<i class="' + (e.t !== "strength" ? "knee " : "") + (done ? "on" : "") + '"></i>';
     }).join("");
     b.innerHTML = '<span class="d">Day ' + d.id + '</span><span class="n">' + d.name + '</span>'
                 + '<span class="dots">' + marks + '</span>';
-    b.onclick = () => { S.day = d.id; save(); renderAll(); window.scrollTo({top:0}); };
+    b.onclick = () => { S.day = d.id; save(); renderAll(); show("train"); };
     host.appendChild(b);
   });
+  const p = PHASES[phaseIx(S.week)];
   $("wlabel").textContent = "Week " + S.week;
   $("wprev").disabled = S.week <= 1;
   $("wnext").disabled = S.week >= WEEKS;
   $("daylabel").textContent = "Day " + S.day;
+  $("phasename").textContent = p.name;
+  $("phaseweeks").textContent = "Phase " + (phaseIx(S.week)+1) + " of 3 · week "
+    + (S.week - p.from + 1) + " of " + (p.to - p.from + 1);
+  $("phasenote").textContent = p.note;
 }
 
+function cardEl(e){
+  const key = keyFor(e);
+  const done = S.sets[key] || [];
+  const complete = done.filter(Boolean).length >= e.sets;
+  const steady = e.t !== "strength";
+  const card = document.createElement("article");
+  card.className = "card" + (steady ? " knee" : "") + (complete ? " done" : "");
+
+  let ctrl = "";
+  if(e.m === "load"){
+    const cur = S.load[key];
+    const prev = lastLoad(e.id, S.week);
+    const lastTxt = prev ? ("last " + prev.v + " " + S.unit + " · week " + prev.w)
+                         : "no weight recorded yet";
+    ctrl = '<div class="loadrow">'
+      + '<button class="step" data-act="minus" data-ex="' + e.id + '" aria-label="Less weight">−</button>'
+      + '<div class="loadval">'
+      + '<button data-act="type" data-ex="' + e.id + '" aria-label="Type a weight">'
+      + (cur === undefined ? "—" : cur) + '<span class="unit">' + S.unit + '</span></button>'
+      + '<span class="last">' + lastTxt + '</span></div>'
+      + '<button class="step" data-act="plus" data-ex="' + e.id + '" aria-label="More weight">+</button>'
+      + '</div>';
+  } else if(e.t === "knee"){
+    ctrl = '<div class="vow">No weight here. This one grows by seconds, depth and steadiness.</div>';
+  } else if(e.t === "neck" && !e.daily){
+    ctrl = '<div class="vow">Little or no weight. Exact and unhurried, well short of strain.</div>';
+  } else if(e.daily){
+    ctrl = '<div class="vow"></div>';
+  }
+
+  let chips = "";
+  for(let i = 0; i < e.sets; i++){
+    const on = !!done[i];
+    const label = e.m === "time" ? (on ? "held" : (e.labs ? e.labs[i] : e.secs + "s")) : ("Set " + (i+1));
+    const val = e.m === "time" ? (on ? "✓" : "Start") : (on ? "✓" : "–");
+    chips += '<button class="setbtn' + (on ? " on" : "") + '" data-act="set" data-ex="'
+           + e.id + '" data-i="' + i + '"><span class="fill"></span>'
+           + '<span class="lab">' + label + '</span><span class="val">' + val + '</span></button>';
+  }
+
+  const tag = e.t === "knee" ? "Steadiness" : e.t === "neck" ? "Neck & posture" : "Strength";
+  card.innerHTML = '<div class="card-head"><div class="eyebrow">'
+    + '<span class="tag">' + tag + '</span>'
+    + '<span class="target">' + e.sets + ' × ' + e.tgt + '</span></div>'
+    + '<h2 class="exname">' + e.n + '</h2>'
+    + '<p class="cue">' + e.cue + '</p></div>'
+    + '<div class="cbody">' + ctrl + '<div class="sets">' + chips + '</div></div>';
+  return card;
+}
+
+function scaleHTML(kind, v){
+  return [1,2,3,4,5].map(n => '<button data-feel="' + n + '" data-kind="' + kind
+    + '" aria-pressed="' + (v === n) + '">' + n + '</button>').join("");
+}
+
+let shownDate = "";
 function renderCards(){
   const host = $("cards");
   host.innerHTML = "";
-  day().ex.forEach(e => {
-    const key = lk(S.week, e.id);
-    const done = S.sets[key] || [];
-    const complete = done.filter(Boolean).length >= e.sets;
-    const knee = e.t === "knee";
-    const card = document.createElement("article");
-    card.className = "card" + (knee ? " knee" : "") + (complete ? " done" : "");
+  dayEx().forEach(e => host.appendChild(cardEl(e)));
+  const dh = $("dailycards");
+  dh.innerHTML = "";
+  DAILY.forEach(e => dh.appendChild(cardEl(e)));
+  shownDate = dateKey();
+  $("dailydate").textContent = new Date().toLocaleDateString(undefined, {weekday:"long", month:"long", day:"numeric"});
 
-    let ctrl = "";
-    if(e.m === "load"){
-      const cur = S.load[key];
-      const prev = lastLoad(e.id, S.week);
-      const lastTxt = prev ? ("last " + prev.v + " " + S.unit + " \u00b7 week " + prev.w)
-                           : "no weight recorded yet";
-      ctrl = '<div class="loadrow">'
-        + '<button class="step" data-act="minus" data-ex="' + e.id + '" aria-label="Less weight">\u2212</button>'
-        + '<div class="loadval">'
-        + '<button data-act="type" data-ex="' + e.id + '" aria-label="Type a weight">'
-        + (cur === undefined ? "\u2014" : cur) + '<span class="unit">' + S.unit + '</span></button>'
-        + '<span class="last">' + lastTxt + '</span></div>'
-        + '<button class="step" data-act="plus" data-ex="' + e.id + '" aria-label="More weight">+</button>'
-        + '</div>';
-    } else if(knee){
-      ctrl = '<div class="vow">No weight here. This one grows by seconds, depth and steadiness.</div>';
-    }
+  const k = "w" + S.week + "|" + S.day;
+  $("scale").innerHTML = scaleHTML("feel", S.feel[k]);
+  $("scaleHead").innerHTML = scaleHTML("head", S.head[k]);
+}
 
-    let chips = "";
-    for(let i = 0; i < e.sets; i++){
-      const on = !!done[i];
-      const label = e.m === "time" ? (on ? "held" : e.secs + "s") : ("Set " + (i+1));
-      const val = e.m === "time" ? (on ? "\u2713" : "Start") : (on ? "\u2713" : "\u2013");
-      chips += '<button class="setbtn' + (on ? " on" : "") + '" data-act="set" data-ex="'
-             + e.id + '" data-i="' + i + '"><span class="fill"></span>'
-             + '<span class="lab">' + label + '</span><span class="val">' + val + '</span></button>';
-    }
-
-    card.innerHTML = '<div class="card-head"><div class="eyebrow">'
-      + '<span class="tag">' + (knee ? "Steadiness" : "Strength") + '</span>'
-      + '<span class="target">' + e.sets + ' \u00d7 ' + e.tgt + '</span></div>'
-      + '<h2 class="exname">' + e.n + '</h2>'
-      + '<p class="cue">' + e.cue + '</p></div>'
-      + '<div class="cbody">' + ctrl + '<div class="sets">' + chips + '</div></div>';
-    host.appendChild(card);
+function feelTable(map, weeks, emptyMsg){
+  const rows = weeks.map(w => {
+    const per = PROGRAM.map(d => map["w" + w + "|" + d.id]);
+    const got = per.filter(v => typeof v === "number");
+    return { w:w, per:per, avg: got.length ? got.reduce((a,b) => a+b, 0) / got.length : null };
   });
-
-  const f = S.feel["w" + S.week + "|" + S.day];
-  $("scale").innerHTML = [1,2,3,4,5].map(n =>
-    '<button data-feel="' + n + '" aria-pressed="' + (f === n) + '">' + n + '</button>').join("");
+  if(!rows.some(r => r.avg !== null)) return '<p class="empty">' + emptyMsg + '</p>';
+  return '<table class="grid"><thead><tr><th class="lift">Week</th><th>A</th><th>B</th><th>C</th><th>Avg</th></tr></thead><tbody>'
+    + rows.map(r => '<tr><td class="lift">Week ' + r.w + '</td>'
+        + r.per.map(v => '<td>' + (typeof v === "number" ? v : "·") + '</td>').join("")
+        + '<td class="feel">' + (r.avg === null ? "·" : r.avg.toFixed(1)) + '</td></tr>').join("")
+    + '</tbody></table>';
 }
 
 function renderHistory(){
-  const weeks = Array.from({length:WEEKS}, (_,i) => i+1);
+  const p = PHASES[phaseIx(S.week)];
+  const weeks = Array.from({length:p.to - p.from + 1}, (_,i) => p.from + i);
+  $("histphase").textContent = p.name + " · weeks " + p.from + "–" + p.to;
   const rows = MAIN_LIFTS.map(id => {
     const ex = PROGRAM.reduce((a,d) => a.concat(d.ex), []).find(x => x.id === id);
     const vals = weeks.map(w => S.load[lk(w,id)]);
@@ -447,27 +598,26 @@ function renderHistory(){
   });
   const any = rows.some(r => r.best !== null);
   $("liftgrid").innerHTML = !any
-    ? '<p class="empty">Nothing recorded yet. Weights entered during practice gather here, week by week, so you can see whether the number is truly moving.</p>'
+    ? '<p class="empty">Nothing recorded in this phase yet. Weights entered during practice gather here, week by week, so you can see whether the number is truly moving.</p>'
     : '<table class="grid"><thead><tr><th class="lift">Lift</th>'
       + weeks.map(w => '<th>' + w + '</th>').join("") + '<th>Best</th></tr></thead><tbody>'
       + rows.map(r => '<tr><td class="lift">' + r.ex.n.split(" or ")[0] + '</td>'
-          + r.vals.map(v => '<td>' + (v === undefined ? "\u00b7" : v) + '</td>').join("")
-          + '<td class="best">' + (r.best === null ? "\u00b7" : r.best) + '</td></tr>').join("")
+          + r.vals.map(v => '<td>' + (typeof v === "number" ? v : "·") + '</td>').join("")
+          + '<td class="best">' + (r.best === null ? "·" : r.best) + '</td></tr>').join("")
       + '</tbody></table>';
 
-  const feelRows = weeks.map(w => {
-    const per = PROGRAM.map(d => S.feel["w" + w + "|" + d.id]);
-    const got = per.filter(v => typeof v === "number");
-    return { w:w, per:per, avg: got.length ? got.reduce((a,b) => a+b, 0) / got.length : null };
-  });
-  const anyFeel = feelRows.some(r => r.avg !== null);
-  $("feelgrid").innerHTML = !anyFeel
-    ? '<p class="empty">Mark how the knees felt the day after each session and the average settles here. A week that dips asks you to cut range, not to push harder.</p>'
-    : '<table class="grid"><thead><tr><th class="lift">Week</th><th>A</th><th>B</th><th>C</th><th>Avg</th></tr></thead><tbody>'
-      + feelRows.map(r => '<tr><td class="lift">Week ' + r.w + '</td>'
-          + r.per.map(v => '<td>' + (v === undefined ? "\u00b7" : v) + '</td>').join("")
-          + '<td class="feel">' + (r.avg === null ? "\u00b7" : r.avg.toFixed(1)) + '</td></tr>').join("")
-      + '</tbody></table>';
+  $("feelgrid").innerHTML = feelTable(S.feel, weeks,
+    'Mark how the knees felt the day after each session and the average settles here. A week that dips asks you to cut range, not to push harder.');
+  $("headgrid").innerHTML = feelTable(S.head, weeks,
+    'Mark how the head and neck felt the day after each session. A week that dips asks you to go back to last week’s weights.');
+
+  let cells = "";
+  for(let back = 13; back >= 0; back--){
+    const ticks = DAILY.map(e => (S.sets[keyFor(e, back)] || []).filter(Boolean).length);
+    const full = DAILY.every((e,i) => ticks[i] >= e.sets);
+    cells += '<i class="' + (full ? "full" : ticks.some(Boolean) ? "part" : "") + '"></i>';
+  }
+  $("fort").innerHTML = cells;
 }
 
 function renderAll(){ renderTabs(); renderCards(); renderHistory(); }
@@ -479,15 +629,17 @@ document.addEventListener("click", ev => {
   if(!t) return;
 
   if(t.dataset.feel){
+    const map = t.dataset.kind === "head" ? S.head : S.feel;
     const k = "w" + S.week + "|" + S.day;
     const n = Number(t.dataset.feel);
-    S.feel[k] = S.feel[k] === n ? undefined : n;
+    if(map[k] === n) delete map[k]; else map[k] = n;
     save(); renderCards(); renderHistory();
     return;
   }
 
-  const ex = day().ex.find(x => x.id === t.dataset.ex);
-  const key = lk(S.week, ex.id);
+  const ex = findEx(t.dataset.ex);
+  if(!ex) return;
+  const key = keyFor(ex);
   const act = t.dataset.act;
 
   if(act === "plus" || act === "minus"){
@@ -503,7 +655,7 @@ document.addEventListener("click", ev => {
                               S.load[key] === undefined ? "" : S.load[key]);
     if(raw === null) return;
     const n = parseFloat(String(raw).replace(",", "."));
-    S.load[key] = isNaN(n) ? undefined : Math.max(0, n);
+    if(isNaN(n)) delete S.load[key]; else S.load[key] = Math.max(0, n);
     save(); renderCards();
     return;
   }
@@ -547,8 +699,9 @@ function runHold(btn, ex, key, i){
 /* rest timer */
 let restTimer = null, restLeft = 0;
 function startRest(ex){
-  restLeft = ex.t === "knee" ? 60 : 120;
-  $("restL").textContent = ex.t === "knee" ? "A short rest \u2014 steadiness work"
+  if(ex.daily) return;
+  restLeft = ex.t !== "strength" ? 60 : 120;
+  $("restL").textContent = ex.t !== "strength" ? "A short rest \u2014 steadiness work"
                                            : "Rest before the next set";
   $("rest").classList.add("up");
   if(restTimer) clearInterval(restTimer);
@@ -599,14 +752,19 @@ function chime(){
 $("wprev").onclick = () => { if(S.week > 1){ S.week--; save(); renderAll(); } };
 $("wnext").onclick = () => { if(S.week < WEEKS){ S.week++; save(); renderAll(); } };
 function show(v){
-  $("view-train").hidden = v !== "train";
-  $("view-history").hidden = v !== "history";
-  $("nav-train").setAttribute("aria-current", v === "train" ? "page" : "false");
-  $("nav-history").setAttribute("aria-current", v === "history" ? "page" : "false");
+  ["train","daily","history"].forEach(n => {
+    $("view-" + n).hidden = v !== n;
+    $("nav-" + n).setAttribute("aria-current", v === n ? "page" : "false");
+  });
   window.scrollTo({top:0});
 }
 $("nav-train").onclick = () => show("train");
+$("nav-daily").onclick = () => { renderCards(); show("daily"); };
 $("nav-history").onclick = () => { renderHistory(); show("history"); };
+/* the daily list belongs to a calendar day: refresh it when the app is reopened on a new one */
+document.addEventListener("visibilitychange", () => {
+  if(!document.hidden && shownDate !== dateKey() && !holdTimer) renderAll();
+});
 
 /* backup */
 $("export").onclick = () => {
