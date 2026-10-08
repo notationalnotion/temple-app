@@ -108,6 +108,11 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .exname{font-family:var(--display);font-weight:500;font-size:22px;line-height:1.2;
   margin:0;letter-spacing:.005em}
 .cue{font-size:15.5px;color:var(--ink2);margin:7px 0 0;line-height:1.45}
+.swap{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:10px 0 0}
+.swap .micro{color:var(--mute);font-size:9px}
+.swap button{font-family:var(--body);font-style:italic;font-size:15.5px;color:var(--ink2);
+  padding:4px 0;border-bottom:1px solid var(--line2);line-height:1.2;text-align:left}
+.swap button:active{color:var(--bronze);border-bottom-color:var(--bronze)}
 .cbody{padding:0 17px 16px}
 
 .loadrow{display:flex;align-items:center;gap:12px;margin:16px 0 15px}
@@ -255,6 +260,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
       <summary><span class="micro">Warm-up &middot; eight minutes</span></summary>
       <ul>
         <li>Calf raises &mdash; 2 &times; 15</li>
+        <li>Supported toe raises &mdash; 1 &times; 10, back and head against a wall</li>
         <li>Glute bridges &mdash; 2 &times; 12, slow</li>
         <li>Banded lateral steps &mdash; 2 &times; 15 each way</li>
         <li>Banded terminal knee extension &mdash; 1 &times; 15 each leg</li>
@@ -273,6 +279,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
         <li><em>Earn depth.</em> You can reach positions you cannot yet control.</li>
         <li><em>Keep breathing.</em> Out on the effort. No held breath, no grinding reps.</li>
         <li><em>No shrug.</em> Shoulders stay away from the ears on every lift and carry.</li>
+        <li><em>Swap, do not stack.</em> Where a card offers another movement, pick one for the week. Each keeps its own weights.</li>
         <li><em>One change at a time.</em> More weight, more reps or a new movement, never two at once.</li>
         <li><em>Hold when it talks back.</em> A day-after score of 2 or lower, or a headache after training, means repeat the week at last week&rsquo;s weights.</li>
       </ul>
@@ -376,7 +383,9 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 "use strict";
 
 /* ============================ program ============================ */
-/* rx = [sets, target, seconds] for each of the three phases; null = not in that phase */
+/* rx = [sets, target, seconds] for each of the three phases; null = not in that phase.
+   alt = movements that can stand in for the slot; anything an alt leaves out is inherited.
+   pt = taken from the 2025 physical therapy sheets. */
 const PHASES = [
   { name:"Re-entry", from:1, to:4,
     note:"Loads that feel almost too easy, with three or four reps left in hand on every set. Hold the same weights for the first two weeks. After that, take the smallest step on one or two lifts a session." },
@@ -388,7 +397,9 @@ const PHASES = [
 const PROGRAM = [
   { id:"A", name:"Squat & push", ex:[
     {id:"a1", n:"Spanish squat", t:"knee", m:"time", rx:[[2,"20 sec",20],[2,"30 sec",30],[2,"45 sec",45]], cue:"Band behind the knees, shins vertical, hips back."},
-    {id:"a2", n:"Goblet or front squat", t:"strength", m:"load", rx:[[2,"10 reps"],[3,"8-10 reps"],[4,"6-8 reps"]], cue:"Three seconds down. Soft knees at the top. Sit to a box until the depth is yours."},
+    {id:"a2", n:"Goblet or front squat", t:"strength", m:"load", rx:[[2,"10 reps"],[3,"8-10 reps"],[4,"6-8 reps"]], cue:"Three seconds down. Soft knees at the top. Sit to a box until the depth is yours.", alt:[
+      {id:"a2p", pt:true, n:"Leg press", cue:"Feet flat and hip width, knees in line with the hips. Three seconds down, stop just shy of straight."},
+    ]},
     {id:"a3", n:"Dumbbell bench or floor press", t:"strength", m:"load", rx:[[2,"10-12 reps"],[3,"8-10 reps"],[4,"6-8 reps"]], cue:"Stop just shy of lockout, elbows 45 degrees from the ribs. Head heavy on the bench."},
     {id:"a4", n:"Chest-supported row", t:"strength", m:"load", rx:[[2,"12 reps"],[3,"10 reps"],[4,"8 reps"]], cue:"Ribs down, no shrug at the top. Eyes on the floor, neck long."},
     {id:"a5", n:"Romanian deadlift", t:"strength", m:"load", rx:[[2,"10 reps"],[3,"8-10 reps"],[3,"6-8 reps"]], cue:"Stop at mid-shin. Hamstrings, not lower back. Chin tucked, not looking up."},
@@ -397,6 +408,7 @@ const PROGRAM = [
     {id:"a10", n:"Prone Y raise", t:"neck", m:"reps", rx:[[2,"8 reps"],[2,"10 reps"],[3,"10 reps"]], cue:"Face down on an incline bench. Thumbs up, shoulder blades down and back, forehead resting."},
     {id:"a7", n:"Eccentric step-down", t:"knee", m:"reps", rx:[[2,"5 each leg"],[2,"6 each leg"],[3,"6 each leg"]], cue:"Four seconds down. Knee tracks over the mid-foot."},
     {id:"a8", n:"Farmer's carry", t:"strength", m:"load", rx:[[2,"30 m"],[3,"40 m"],[3,"40 m"]], cue:"Tall posture, shoulders packed down. Light enough that the neck stays quiet."},
+    {id:"a11", pt:true, n:"McGill curl-up", t:"neck", m:"reps", rx:[[2,"6 reps"],[2,"8 reps"],[2,"10 reps"]], cue:"Hands under the arch of the low back, one knee bent. Head and shoulders lift as one piece, barely off the floor, chin gently back. Hold five seconds. Stop the set if the neck takes over."},
   ]},
   { id:"B", name:"Hinge & pull", ex:[
     {id:"b1", n:"Wall sit", t:"knee", m:"time", rx:[[2,"30 sec",30],[2,"45 sec",45],[2,"60 sec",60]], cue:"Knees near 90 degrees, weight into the heels."},
@@ -407,16 +419,29 @@ const PROGRAM = [
     {id:"b9", n:"Seated cable row", t:"strength", m:"load", rx:[[2,"12 reps"],[3,"10 reps"],[3,"8 reps"]], cue:"Tall spine, pull to the lower ribs. Do not reach forward at the end."},
     {id:"b6", n:"Split squat", t:"knee", m:"reps", rx:[[2,"6 each leg"],[3,"8 each leg"],[3,"8 each leg"]], cue:"Rear foot on the floor. Partial depth, front shin vertical."},
     {id:"b7", n:"Copenhagen plank", t:"strength", m:"time", rx:[[2,"10 sec each side",10],[2,"20 sec each side",20],[2,"30 sec each side",30]], cue:"Knee on a bench. Stop before the adductor cramps."},
-    {id:"b8", n:"Pallof press", t:"strength", m:"reps", rx:[[2,"8 each side"],[3,"10 each side"],[3,"10 each side"]], cue:"Resist the twist, do not create one."},
+    {id:"b8", n:"Pallof press", t:"strength", m:"reps", rx:[[2,"8 each side"],[3,"10 each side"],[3,"10 each side"]], cue:"Resist the twist, do not create one.", alt:[
+      {id:"b8p", pt:true, n:"Single-leg Pallof press", cue:"Stand on one leg, knee soft. Press out, hold one second, bring it back. The body does not turn."},
+    ]},
   ]},
   { id:"C", name:"Single leg", ex:[
-    {id:"c1", n:"Banded terminal knee extension", t:"knee", m:"reps", rx:[[2,"15 each leg"],[2,"15 each leg"],[2,"20 each leg"]], cue:"Straighten to a soft lockout only."},
-    {id:"c2", n:"Loaded step-up or Bulgarian split squat", t:"strength", m:"load", rx:[[2,"8 each leg"],[3,"8 each leg"],[4,"6-8 each leg"]], cue:"Three seconds down, no push-off from the back leg. Step-ups first, split squats once they are steady."},
+    {id:"c1", n:"Banded terminal knee extension", t:"knee", m:"reps", rx:[[2,"15 each leg"],[2,"15 each leg"],[2,"20 each leg"]], cue:"Straighten to a soft lockout only.", alt:[
+      {id:"c1p", pt:true, n:"Captain Morgan", rx:[[2,"8 each leg"],[2,"10 each leg"],[2,"10 each leg"]], cue:"Inside knee presses a ball into the wall. Standing knee soft and pushed out, pelvis level, as the other knee reaches back."},
+      {id:"c1q", pt:true, n:"Single-leg ball toss", rx:[[2,"8 each leg"],[2,"10 each leg"],[2,"10 each leg"]], cue:"A light ball, tossed and caught at chest height. Eyes level, never overhead. Standing knee soft."},
+    ]},
+    {id:"c2", n:"Loaded step-up or Bulgarian split squat", t:"strength", m:"load", rx:[[2,"8 each leg"],[3,"8 each leg"],[4,"6-8 each leg"]], cue:"Three seconds down, no push-off from the back leg. Step-ups first, split squats once they are steady.", alt:[
+      {id:"c2p", pt:true, n:"Heel-elevated single-leg squat", t:"knee", m:"reps", rx:[[2,"6 each leg"],[3,"8 each leg"],[3,"10 each leg"]], cue:"Heel on a plate, hips back to a bench, three seconds down. A lower bench is the progression."},
+    ]},
     {id:"c3", n:"Single-leg RDL", t:"knee", m:"reps", rx:[[2,"6 each leg"],[3,"8 each leg"],[3,"8 each leg"]], cue:"Fingertips on a wall. Hips square, standing knee soft."},
     {id:"c4", n:"Push-up or dumbbell press", t:"strength", m:"load", rx:[[2,"10 reps"],[3,"10 reps"],[3,"8 reps"]], cue:"Soft elbows at the top. Hands raised on a bench until full push-ups are clean."},
     {id:"c5", n:"Single-arm dumbbell row", t:"strength", m:"load", rx:[[2,"12 each side"],[3,"10 each side"],[4,"8 each side"]], cue:"No twisting through the trunk, no shrug."},
     {id:"c6", n:"Face pull", t:"strength", m:"load", rx:[[2,"15 reps"],[3,"15 reps"],[3,"12 reps"]], cue:"High elbows, slow return. Chin stays back."},
-    {id:"c7", n:"Hamstring curl or bridge walkout", t:"strength", m:"reps", rx:[[2,"8 reps"],[3,"8 reps"],[3,"10 reps"]], cue:"Hips stay high throughout."},
+    {id:"c7", n:"Hamstring curl or bridge walkout", t:"strength", m:"reps", rx:[[2,"8 reps"],[3,"8 reps"],[3,"10 reps"]], cue:"Hips stay high throughout.", alt:[
+      {id:"c7p", pt:true, n:"Seated hamstring curl", m:"load", rx:[[2,"10 reps"],[3,"10 reps"],[3,"8 reps"]], cue:"Sit tall, pad on the lower shins. One-second squeeze, slow return, stop short of straight knees."},
+      {id:"c7q", pt:true, n:"Standing band hamstring curl", rx:[[2,"8 each leg"],[3,"10 each leg"],[3,"10 each leg"]], cue:"Heel to the buttock, hold two seconds, a small kick back. Pelvis level. A cramp eases as the leg straightens."},
+    ]},
+    {id:"c10", pt:true, n:"Hip abduction machine", t:"strength", m:"load", rx:[[2,"15 reps"],[3,"15 reps"],[3,"12 reps"]], cue:"Press the knees out, squeeze the sides of the hips, slow return.", alt:[
+      {id:"c10p", pt:true, n:"Cable side kick", rx:[[2,"10 each leg"],[2,"10 each leg"],[3,"10 each leg"]], cue:"Strap at the outer ankle, both knees soft, lean away from the stack. Lift out to the side, slow return."},
+    ]},
     {id:"c9", n:"Dead bug", t:"neck", m:"reps", rx:[[2,"6 each side"],[3,"8 each side"],[3,"8 each side"]], cue:"Low back heavy on the floor, head resting. Breathe out as the arm and leg reach."},
     {id:"c8", n:"Suitcase carry", t:"strength", m:"load", rx:[[2,"20 m each side"],[3,"30 m each side"],[3,"30 m each side"]], cue:"Do not lean. Stay stacked."},
   ]},
@@ -432,7 +457,7 @@ const MAIN_LIFTS = ["a2","a3","a5","b2","b3","b5","c2"];
 const WEEKS = 20, KEY = "temple.v2", OLD_KEY = "temple.v1";
 
 /* ============================ state ============================ */
-const blank = { week:1, day:"A", unit:"kg", load:{}, sets:{}, feel:{}, head:{} };
+const blank = { week:1, day:"A", unit:"kg", load:{}, sets:{}, feel:{}, head:{}, swap:{} };
 let S = load();
 
 function load(){
@@ -453,8 +478,24 @@ function save(){
 }
 const lk = (w,e) => "w" + w + "|" + e;
 const phaseIx = w => Math.max(0, PHASES.findIndex(p => w >= p.from && w <= p.to));
-const resolve = (e,p) => e.rx[p] ? Object.assign({}, e, {sets:e.rx[p][0], tgt:e.rx[p][1], secs:e.rx[p][2]}) : null;
-const exFor = (d,w) => d.ex.map(e => resolve(e, phaseIx(w))).filter(Boolean);
+/* a swap is chosen for a week and carries forward until it is changed */
+function variantId(e, w){
+  for(let x = w; x >= 1; x--){
+    const v = S.swap[lk(x, e.id)];
+    if(v && (v === e.id || (e.alt || []).some(a => a.id === v))) return v;
+  }
+  return e.id;
+}
+function resolve(e, w){
+  const p = phaseIx(w);
+  if(!e.rx[p]) return null;
+  const opts = [e].concat(e.alt || []);
+  const v = opts.find(o => o.id === variantId(e, w)) || e;
+  const rx = (v.rx && v.rx[p]) || e.rx[p];
+  return Object.assign({}, e, v, { slot:e.id, sets:rx[0], tgt:rx[1], secs:rx[2], pt:!!v.pt,
+    others: opts.filter(o => o !== v).map(o => ({id:o.id, n:o.n})) });
+}
+const exFor = (d,w) => d.ex.map(e => resolve(e, w)).filter(Boolean);
 const dayEx = () => exFor(PROGRAM.find(d => d.id === S.day), S.week);
 function dateKey(back){
   const d = new Date(); d.setDate(d.getDate() - (back || 0));
@@ -541,12 +582,17 @@ function cardEl(e){
            + '<span class="lab">' + label + '</span><span class="val">' + val + '</span></button>';
   }
 
-  const tag = e.t === "knee" ? "Steadiness" : e.t === "neck" ? "Neck & posture" : "Strength";
+  const tag = (e.t === "knee" ? "Steadiness" : e.t === "neck" ? "Neck & posture" : "Strength")
+            + (e.pt ? " · PT 2025" : "");
+  const swap = e.others && e.others.length
+    ? '<div class="swap"><span class="micro">Or</span>' + e.others.map(o =>
+        '<button data-act="swap" data-slot="' + e.slot + '" data-to="' + o.id + '">' + o.n + '</button>').join("") + '</div>'
+    : "";
   card.innerHTML = '<div class="card-head"><div class="eyebrow">'
     + '<span class="tag">' + tag + '</span>'
     + '<span class="target">' + e.sets + ' × ' + e.tgt + '</span></div>'
     + '<h2 class="exname">' + e.n + '</h2>'
-    + '<p class="cue">' + e.cue + '</p></div>'
+    + '<p class="cue">' + e.cue + '</p>' + swap + '</div>'
     + '<div class="cbody">' + ctrl + '<div class="sets">' + chips + '</div></div>';
   return card;
 }
@@ -591,8 +637,9 @@ function renderHistory(){
   const weeks = Array.from({length:p.to - p.from + 1}, (_,i) => p.from + i);
   $("histphase").textContent = p.name + " · weeks " + p.from + "–" + p.to;
   const rows = MAIN_LIFTS.map(id => {
-    const ex = PROGRAM.reduce((a,d) => a.concat(d.ex), []).find(x => x.id === id);
-    const vals = weeks.map(w => S.load[lk(w,id)]);
+    const slot = PROGRAM.reduce((a,d) => a.concat(d.ex), []).find(x => x.id === id);
+    const ex = [slot].concat(slot.alt || []).find(o => o.id === variantId(slot, S.week)) || slot;
+    const vals = weeks.map(w => S.load[lk(w, variantId(slot, w))]);
     const nums = vals.filter(v => typeof v === "number");
     return { ex:ex, vals:vals, best: nums.length ? Math.max.apply(null, nums) : null };
   });
@@ -634,6 +681,13 @@ document.addEventListener("click", ev => {
     const n = Number(t.dataset.feel);
     if(map[k] === n) delete map[k]; else map[k] = n;
     save(); renderCards(); renderHistory();
+    return;
+  }
+
+  if(t.dataset.act === "swap"){
+    if(holdTimer){ clearInterval(holdTimer); holdTimer = null; }
+    S.swap[lk(S.week, t.dataset.slot)] = t.dataset.to;
+    save(); renderAll();
     return;
   }
 
