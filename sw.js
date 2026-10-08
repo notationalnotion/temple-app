@@ -1,4 +1,4 @@
-const CACHE = "temple-v6";
+const CACHE = "temple-v7";
 const ASSETS = ["./", "./index.html", "./manifest.webmanifest",
   "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
