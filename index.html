@@ -213,6 +213,11 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   font-family:var(--ui);font-weight:300;font-size:10px;letter-spacing:.15em;
   text-transform:uppercase;color:var(--ink2)}
 .tools button.danger{color:var(--brick);border-color:#E0CCC4}
+.tools button[hidden]{display:none}
+.fld{display:block;margin:0 0 12px;color:var(--mute)}
+.fld input{display:block;width:100%;margin-top:7px;padding:12px;border:1px solid var(--line2);
+  border-radius:4px;background:var(--surface);font-family:var(--ui);font-weight:300;font-size:16px;color:var(--ink)}
+.fld input:disabled{color:var(--mute);background:var(--tint)}
 .foot{font-size:15px;color:var(--ink2);line-height:1.55;margin:2px 0 26px}
 .colophon{color:var(--mute);text-align:center;padding:16px 0 26px;
   border-top:1px solid var(--line);font-size:9px;letter-spacing:.2em}
@@ -345,13 +350,24 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     <div class="micro seclabel">Daily practice &middot; last fourteen days</div>
     <div class="fort" id="fort"></div>
     <div class="scalekey micro"><span>Two weeks ago</span><span>Today</span></div>
+    <div class="micro seclabel">Google Sheets</div>
+    <p class="foot" id="syncState"></p>
+    <label class="fld"><span class="micro">Web app URL</span>
+      <input id="syncUrl" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://script.google.com/macros/s/&hellip;/exec"></label>
+    <label class="fld"><span class="micro">Passphrase</span>
+      <input id="syncTok" type="password" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+    <div class="tools">
+      <button id="syncGo">Connect</button>
+      <button id="syncNow" hidden>Sync now</button>
+      <button id="syncOff" class="danger" hidden>Disconnect</button>
+    </div>
     <div class="micro seclabel">Your records</div>
     <div class="tools">
       <button id="export">Export backup</button>
       <button id="import">Restore backup</button>
       <button id="wipe" class="danger">Erase everything</button>
     </div>
-    <p class="foot">Everything is kept on this phone alone &mdash; nothing is sent anywhere. Export a backup every few weeks: browsers clear storage for apps left unopened.</p>
+    <p class="foot">Everything is saved on this phone first. Unless a Google Sheet is connected above, nothing is sent anywhere, so export a backup every few weeks: browsers clear storage for apps left unopened.</p>
     <div class="colophon micro">Temple &middot; not medical advice</div>
     <input type="file" id="file" accept="application/json,.json" hidden>
   </section>
@@ -432,7 +448,7 @@ const MAIN_LIFTS = ["a2","a3","a5","b2","b3","b5","c2"];
 const WEEKS = 20, KEY = "temple.v2", OLD_KEY = "temple.v1";
 
 /* ============================ state ============================ */
-const blank = { week:1, day:"A", unit:"kg", load:{}, sets:{}, feel:{}, head:{} };
+const blank = { week:1, day:"A", unit:"kg", load:{}, sets:{}, feel:{}, head:{}, when:{}, updatedAt:0 };
 let S = load();
 
 function load(){
@@ -447,9 +463,14 @@ function load(){
   }catch(e){ return structuredClone(blank); }
 }
 let saveWarned = false;
-function save(){
+function persist(){
   try{ localStorage.setItem(KEY, JSON.stringify(S)); }
   catch(e){ if(!saveWarned){ saveWarned = true; toast("Storage blocked"); } }
+}
+function save(){
+  S.updatedAt = Date.now();
+  persist();
+  queuePush();
 }
 const lk = (w,e) => "w" + w + "|" + e;
 const phaseIx = w => Math.max(0, PHASES.findIndex(p => w >= p.from && w <= p.to));
@@ -665,10 +686,141 @@ document.addEventListener("click", ev => {
     const arr = S.sets[key] || (S.sets[key] = []);
     if(arr[i]){ arr[i] = false; save(); renderAll(); return; }
     if(ex.m === "time" && !t.classList.contains("running")){ runHold(t, ex, key, i); return; }
-    arr[i] = true; save(); renderAll();
+    arr[i] = true; stamp(ex); save(); renderAll();
     startRest(ex);
   }
 });
+
+/* the date a session was actually done, for the sheet */
+function stamp(ex){
+  if(ex.daily) return;
+  const k = "w" + S.week + "|" + S.day;
+  S.when = S.when || {};
+  if(!S.when[k]) S.when[k] = dateKey();
+}
+
+/* ============================ google sheets sync ============================ */
+/* the phone stays the first place everything is saved; the sheet is a copy kept in step */
+const SYNC_KEY = "temple.sync";
+let SY = (() => { try{ return JSON.parse(localStorage.getItem(SYNC_KEY)) || {}; }catch(e){ return {}; } })();
+function saveSync(){ try{ localStorage.setItem(SYNC_KEY, JSON.stringify(SY)); }catch(e){} }
+const linked = () => !!(SY.url && SY.token);
+let pushT = null, pushing = false;
+
+function queuePush(){
+  if(!linked()) return;
+  SY.dirty = true; saveSync();
+  clearTimeout(pushT);
+  pushT = setTimeout(push, 2500);
+  paintSync();
+}
+
+function sheetRows(){
+  const sessions = [];
+  for(let w = 1; w <= WEEKS; w++){
+    PROGRAM.forEach(d => {
+      const k = "w" + w + "|" + d.id;
+      exFor(d, w).forEach(e => {
+        const load = S.load[lk(w, e.id)];
+        const done = (S.sets[lk(w, e.id)] || []).filter(Boolean).length;
+        if(load === undefined && !done) return;
+        sessions.push([(S.when && S.when[k]) || "", w, PHASES[phaseIx(w)].name, d.id + " \u00b7 " + d.name, e.n,
+          typeof load === "number" ? load : "", typeof load === "number" ? S.unit : "",
+          done, e.sets, e.tgt,
+          typeof S.feel[k] === "number" ? S.feel[k] : "", typeof S.head[k] === "number" ? S.head[k] : ""]);
+      });
+    });
+  }
+  const names = {}; DAILY.forEach(e => { names[e.id] = e; });
+  const daily = Object.keys(S.sets).filter(k => k[0] === "d").sort().map(k => {
+    const date = k.slice(1, 11), e = names[k.slice(12)];
+    if(!e) return null;
+    return [date, e.n, (S.sets[k] || []).filter(Boolean).length, e.sets];
+  }).filter(r => r && r[2] > 0);
+  return {
+    sessionsHead:["Date","Week","Phase","Day","Exercise","Weight","Unit","Sets done","Sets planned","Target","Knees next day","Head & neck next day"],
+    sessions:sessions,
+    dailyHead:["Date","Exercise","Sets done","Sets planned"],
+    daily:daily,
+  };
+}
+
+function push(){
+  if(!linked() || pushing) return Promise.resolve();
+  if(!navigator.onLine){ paintSync(); return Promise.resolve(); }
+  pushing = true; paintSync();
+  const sentAt = S.updatedAt;
+  const body = Object.assign({ token:SY.token, state:S }, sheetRows());
+  /* plain-text body keeps this a simple request, which Apps Script accepts from any site */
+  return fetch(SY.url, { method:"POST", body:JSON.stringify(body), cache:"no-store" })
+    .then(r => r.json())
+    .then(j => {
+      if(!j.ok) throw new Error(j.error || "Sheet refused the update");
+      SY.at = Date.now(); SY.err = "";
+      if(S.updatedAt === sentAt) SY.dirty = false;
+      saveSync();
+    })
+    .catch(err => { SY.err = navigator.onLine ? String(err.message || err) : ""; saveSync(); })
+    .finally(() => { pushing = false; paintSync(); if(SY.dirty && S.updatedAt !== sentAt) queuePush(); });
+}
+
+function pull(){
+  if(!linked() || !navigator.onLine) return Promise.resolve();
+  return fetch(SY.url + (SY.url.indexOf("?") < 0 ? "?" : "&") + "token=" + encodeURIComponent(SY.token), { cache:"no-store" })
+    .then(r => r.json())
+    .then(j => {
+      if(!j.ok) throw new Error(j.error || "Sheet could not be read");
+      const R = j.state;
+      if(R && (R.updatedAt || 0) > (S.updatedAt || 0)){
+        S = Object.assign(structuredClone(blank), R);
+        persist(); renderAll(); toast("Brought in from your sheet");
+        SY.dirty = false;
+      } else if(SY.dirty || !R || (R.updatedAt || 0) < (S.updatedAt || 0)){
+        SY.dirty = true; saveSync();
+        return push();
+      }
+      SY.at = Date.now(); SY.err = ""; saveSync();
+    })
+    .catch(err => { SY.err = String(err.message || err); saveSync(); })
+    .finally(paintSync);
+}
+
+function paintSync(){
+  const el = $("syncState");
+  if(!el) return;
+  let msg;
+  if(!linked()) msg = "Not connected. Your records stay on this phone only.";
+  else if(pushing) msg = "Saving to your sheet\u2026";
+  else if(/passphrase/i.test(SY.err || "")) msg = "The sheet did not accept that passphrase. Disconnect, then connect again with the one in your script.";
+  else if(SY.err) msg = "Could not reach your sheet: " + SY.err + ". Your records are safe on this phone and will be sent once it answers.";
+  else if(!navigator.onLine && SY.dirty) msg = "Offline. Your latest changes are on this phone and will go to the sheet when you are back online.";
+  else if(SY.dirty) msg = "Changes waiting to go to your sheet.";
+  else if(SY.at) msg = "Connected. Last saved to your sheet " + new Date(SY.at).toLocaleString(undefined, {weekday:"short", hour:"numeric", minute:"2-digit"}) + ".";
+  else msg = "Connected.";
+  el.textContent = msg;
+  $("syncUrl").value = SY.url || "";
+  $("syncTok").value = SY.token || "";
+  $("syncGo").hidden = linked();
+  $("syncNow").hidden = $("syncOff").hidden = !linked();
+  $("syncUrl").disabled = $("syncTok").disabled = linked();
+}
+
+$("syncGo").onclick = () => {
+  const url = $("syncUrl").value.trim(), token = $("syncTok").value.trim();
+  if(!/^https:\/\/script\.google\.com\/.+\/exec/.test(url)){ toast("Paste the web app URL ending in /exec"); return; }
+  if(!token){ toast("Add your passphrase"); return; }
+  SY = { url:url, token:token, dirty:true };
+  saveSync(); paintSync();
+  pull().then(() => { if(!SY.err) toast("Connected to your sheet"); });
+};
+$("syncNow").onclick = () => { pull().then(() => toast(SY.err ? "Sheet did not answer" : "Up to date")); };
+$("syncOff").onclick = () => {
+  if(!confirm("Stop syncing with the sheet? Your records stay on this phone, and the sheet keeps what it already has.")) return;
+  SY = {}; saveSync(); paintSync();
+};
+window.addEventListener("online", () => { if(SY.dirty) push(); else paintSync(); });
+window.addEventListener("offline", paintSync);
+document.addEventListener("visibilitychange", () => { if(!document.hidden) pull(); });
 
 /* hold timer */
 let holdTimer = null;
@@ -687,7 +839,7 @@ function runHold(btn, ex, key, i){
       clearInterval(holdTimer); holdTimer = null;
       chime();
       const arr = S.sets[key] || (S.sets[key] = []);
-      arr[i] = true; save(); renderAll(); startRest(ex);
+      arr[i] = true; stamp(ex); save(); renderAll(); startRest(ex);
       return;
     }
     left--;
@@ -808,6 +960,8 @@ if("serviceWorker" in navigator && location.protocol === "https:"){
 }
 
 renderAll();
+paintSync();
+pull();
 </script>
 </body>
 </html>
