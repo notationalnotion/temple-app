@@ -14,13 +14,13 @@
 <link rel="icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
   --bone:#F7F3EC; --surface:#FCFAF6; --tint:#EFEDE8; --wash:#EDEFF2;
-  --ink:#252220; --ink2:#453F38; --mute:#7E766B; --line:#E4DDD2; --line2:#D6CDBF;
-  --bronze:#A98545; --bronze-wash:#F2EADB;
-  --slate:#4C5C70; --slate-wash:#F1F3F6;
+  --ink:#1C1A18; --ink2:#2F2A25; --mute:#5C554C; --line:#DED6CA; --line2:#BFB3A2;
+  --bronze:#86662C; --bronze-wash:#F2EADB;
+  --slate:#3E4D60; --slate-wash:#F1F3F6;
   --brick:#96543F;
   --display:"Cormorant Garamond",Georgia,serif;
   --body:"EB Garamond",Georgia,serif;
@@ -32,13 +32,13 @@
 html,body{margin:0;padding:0}
 body{
   background:var(--bone);color:var(--ink);font-family:var(--body);
-  font-size:17px;line-height:1.55;overscroll-behavior-y:contain;
+  font-size:18px;line-height:1.55;overscroll-behavior-y:contain;
   padding-bottom:calc(94px + var(--safe-b));
   -webkit-font-smoothing:antialiased;
 }
 button{font-family:inherit;color:inherit;background:none;border:none;cursor:pointer}
 :focus-visible{outline:1.5px solid var(--slate);outline-offset:3px}
-.micro{font-family:var(--ui);font-weight:400;font-size:10px;letter-spacing:.2em;
+.micro{font-family:var(--ui);font-weight:500;font-size:12px;letter-spacing:.15em;
   text-transform:uppercase}
 
 /* ---------------- masthead ---------------- */
@@ -47,25 +47,25 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .bar-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .wordmark{font-family:var(--display);font-weight:300;font-size:29px;letter-spacing:.3em;
   text-transform:uppercase;line-height:1;margin-left:.3em}
-.tagline{font-family:var(--ui);font-weight:300;font-size:9.5px;letter-spacing:.17em;
+.tagline{font-family:var(--ui);font-weight:400;font-size:11px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--mute);margin-top:6px}
 .weekpick{display:flex;align-items:center;flex:none}
-.weekpick button{width:30px;height:36px;font-family:var(--display);font-size:21px;
+.weekpick button{width:36px;height:40px;font-family:var(--display);font-size:26px;
   font-weight:300;color:var(--ink2);line-height:1}
 .weekpick button:disabled{opacity:.2}
-.weeklabel{font-family:var(--ui);font-weight:400;font-size:10px;letter-spacing:.16em;
+.weeklabel{font-family:var(--ui);font-weight:500;font-size:12px;letter-spacing:.12em;
   text-transform:uppercase;min-width:60px;text-align:center;color:var(--ink2)}
 .days{display:flex;gap:18px;margin-top:15px;padding-bottom:1px}
 .daytab{flex:1;min-width:0;padding:0 0 12px;background:none;border-bottom:1px solid transparent;text-align:left}
-.daytab .d{font-family:var(--ui);font-weight:400;font-size:10.5px;letter-spacing:.17em;
+.daytab .d{font-family:var(--ui);font-weight:500;font-size:12px;letter-spacing:.13em;
   text-transform:uppercase;color:var(--mute);display:block}
-.daytab .n{display:block;font-family:var(--display);font-weight:400;font-size:16px;
+.daytab .n{display:block;font-family:var(--display);font-weight:500;font-size:18.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   color:var(--mute);margin-top:1px;letter-spacing:.01em}
-.daytab[aria-selected="true"]{border-bottom-color:var(--ink)}
+.daytab[aria-selected="true"]{border-bottom:2px solid var(--ink)}
 .daytab[aria-selected="true"] .d{color:var(--ink2)}
 .daytab[aria-selected="true"] .n{color:var(--ink)}
 .dots{display:flex;gap:3px;margin-top:5px}
-.dots i{flex:1;max-width:14px;height:1.5px;background:var(--line2)}
+.dots i{flex:1;max-width:14px;height:3px;border-radius:1px;background:var(--line2)}
 .dots i.on{background:var(--bronze)}
 .dots i.knee.on{background:var(--slate)}
 .hairline{height:1px;background:var(--line)}
@@ -83,7 +83,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   border-bottom:1px solid var(--mute);transform:rotate(45deg);margin-right:3px;
   transition:transform .2s}
 .note[open] summary::after{transform:rotate(-135deg)}
-.note ul{margin:0 0 18px;padding:0;list-style:none;font-size:16.5px;line-height:1.7;
+.note ul{margin:0 0 18px;padding:0;list-style:none;font-size:18px;line-height:1.7;
   color:var(--ink)}
 .note li{padding-left:16px;position:relative}
 .note li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:1px;
@@ -100,45 +100,45 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 .card.done{opacity:.42}
 .card-head{padding:16px 17px 0}
 .eyebrow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:6px}
-.tag{font-family:var(--ui);font-weight:400;font-size:9px;letter-spacing:.2em;
+.tag{font-family:var(--ui);font-weight:500;font-size:11.5px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--bronze)}
 .knee .tag{color:var(--slate)}
-.target{font-family:var(--ui);font-weight:300;font-size:10px;letter-spacing:.09em;
+.target{font-family:var(--ui);font-weight:500;font-size:13px;letter-spacing:.04em;
   color:var(--mute);text-align:right;white-space:nowrap}
-.exname{font-family:var(--display);font-weight:500;font-size:22px;line-height:1.2;
+.exname{font-family:var(--display);font-weight:600;font-size:26px;line-height:1.2;
   margin:0;letter-spacing:.005em}
-.cue{font-size:15.5px;color:var(--ink2);margin:7px 0 0;line-height:1.45}
+.cue{font-size:17.5px;color:var(--ink2);margin:7px 0 0;line-height:1.45}
 .cbody{padding:0 17px 16px}
 
 .loadrow{display:flex;align-items:center;gap:12px;margin:16px 0 15px}
-.step{width:46px;height:46px;background:transparent;border:1px solid var(--line2);
-  border-radius:50%;font-family:var(--ui);font-weight:300;font-size:20px;color:var(--ink2);
+.step{width:52px;height:52px;background:transparent;border:1px solid var(--line2);
+  border-radius:50%;font-family:var(--ui);font-weight:400;font-size:24px;color:var(--ink);
   display:flex;align-items:center;justify-content:center;flex:none;line-height:1}
 .step:active{background:var(--bronze-wash);border-color:var(--bronze)}
 .loadval{flex:1;text-align:center;min-width:0}
-.loadval button{font-family:var(--ui);font-weight:300;font-size:40px;line-height:1;
+.loadval button{font-family:var(--ui);font-weight:400;font-size:44px;line-height:1;
   letter-spacing:.01em;width:100%;padding:2px 0;font-variant-numeric:tabular-nums}
-.loadval .unit{font-family:var(--ui);font-size:13px;font-weight:300;color:var(--mute);
+.loadval .unit{font-family:var(--ui);font-size:15px;font-weight:400;color:var(--mute);
   margin-left:5px;letter-spacing:.06em}
-.loadval .last{display:block;font-family:var(--ui);font-weight:300;font-size:9.5px;
+.loadval .last{display:block;font-family:var(--ui);font-weight:500;font-size:11.5px;
   color:var(--mute);letter-spacing:.13em;margin-top:7px;text-transform:uppercase}
-.vow{margin:14px 0 15px;font-size:15.5px;font-style:italic;color:#3D4A5C;
+.vow{margin:14px 0 15px;font-size:17px;font-style:italic;color:#2E3A4A;
   line-height:1.4;text-align:center}
 
 .sets{display:flex;gap:8px}
-.setbtn{flex:1;height:54px;background:transparent;border:1px solid var(--line2);
+.setbtn{flex:1;height:62px;background:transparent;border:1px solid var(--line2);
   border-radius:4px;display:flex;flex-direction:column;align-items:center;
   justify-content:center;gap:3px;position:relative;overflow:hidden;
   transition:background .18s,border-color .18s}
-.knee .setbtn{border-color:#D8DFE6}
-.setbtn .lab{font-family:var(--ui);font-weight:300;font-size:9px;letter-spacing:.16em;
+.knee .setbtn{border-color:#B9C4D0}
+.setbtn .lab{font-family:var(--ui);font-weight:500;font-size:11px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--mute);position:relative;z-index:2}
-.setbtn .val{font-family:var(--ui);font-weight:400;font-size:15px;position:relative;z-index:2;
+.setbtn .val{font-family:var(--ui);font-weight:500;font-size:18px;position:relative;z-index:2;
   letter-spacing:.03em}
 .setbtn.on{background:var(--bronze);border-color:var(--bronze);color:var(--surface)}
-.setbtn.on .lab{color:rgba(252,250,246,.76)}
+.setbtn.on .lab{color:rgba(252,250,246,.9)}
 .knee .setbtn.on{background:var(--slate);border-color:var(--slate);color:var(--surface)}
-.knee .setbtn.on .lab{color:rgba(252,250,246,.74)}
+.knee .setbtn.on .lab{color:rgba(252,250,246,.9)}
 .setbtn .fill{position:absolute;left:0;bottom:0;width:100%;height:0;z-index:1;
   background:rgba(93,110,132,.13)}
 .setbtn.running{border-color:var(--slate)}
@@ -146,16 +146,16 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 
 /* ---------------- knee feel ---------------- */
 .feel{margin:28px 0 12px;padding-top:22px;border-top:1px solid var(--line)}
-.feel h3{font-family:var(--display);font-weight:400;font-size:24px;margin:0 0 5px;
+.feel h3{font-family:var(--display);font-weight:500;font-size:27px;margin:0 0 5px;
   letter-spacing:.01em}
-.feel p{margin:0 0 16px;font-size:15.5px;color:var(--ink2);line-height:1.45}
+.feel p{margin:0 0 16px;font-size:17px;color:var(--ink2);line-height:1.45}
 .scale{display:flex;gap:8px}
 .scale button{flex:1;height:52px;background:transparent;border:1px solid var(--line2);
-  border-radius:4px;font-family:var(--ui);font-weight:300;font-size:18px;color:var(--ink2)}
+  border-radius:4px;font-family:var(--ui);font-weight:400;font-size:19px;color:var(--ink)}
 .scale button[aria-pressed="true"]{background:var(--slate);border-color:var(--slate);
   color:var(--surface);font-weight:400}
 .scalekey{display:flex;justify-content:space-between;color:var(--mute);margin-top:9px;
-  font-size:9px;letter-spacing:.13em}
+  font-size:11px;letter-spacing:.1em}
 
 .scalename{color:var(--mute);margin:20px 0 9px}
 .feel p + .scalename{margin-top:0}
@@ -163,9 +163,9 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 /* ---------------- phase ---------------- */
 .phase{margin:0 0 20px}
 .phase .micro{color:var(--bronze)}
-.phase h3{font-family:var(--display);font-weight:400;font-size:27px;margin:5px 0 5px;
+.phase h3{font-family:var(--display);font-weight:500;font-size:30px;margin:5px 0 5px;
   letter-spacing:.01em;line-height:1.15}
-.phase p{margin:0;font-size:15.5px;color:var(--ink2);line-height:1.45}
+.phase p{margin:0;font-size:17px;color:var(--ink2);line-height:1.45}
 .vow:empty{margin:14px 0 0}
 .fort{display:flex;gap:4px}
 .fort i{flex:1;height:24px;border:1px solid var(--line2);border-radius:2px}
@@ -178,52 +178,52 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
   padding:13px 20px calc(13px + var(--safe-b));display:flex;align-items:center;gap:13px;
   transform:translateY(105%);transition:transform .28s ease}
 .rest.up{transform:translateY(0)}
-.rest .t{font-family:var(--ui);font-weight:300;font-size:30px;min-width:74px;
+.rest .t{font-family:var(--ui);font-weight:400;font-size:34px;min-width:74px;
   font-variant-numeric:tabular-nums}
-.rest .lb{flex:1;font-size:15px;color:var(--ink2);line-height:1.25;font-style:italic}
+.rest .lb{flex:1;font-size:16.5px;color:var(--ink2);line-height:1.25;font-style:italic}
 .rest .act{padding:10px 14px;border:1px solid var(--line2);border-radius:4px;
-  font-family:var(--ui);font-weight:300;font-size:10px;letter-spacing:.15em;
-  text-transform:uppercase;color:var(--ink2)}
+  font-family:var(--ui);font-weight:500;font-size:12px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink)}
 
 /* ---------------- nav ---------------- */
 .nav{position:fixed;left:0;right:0;bottom:0;z-index:35;display:flex;
   background:rgba(247,243,236,.95);backdrop-filter:blur(14px);
   border-top:1px solid var(--line);padding-bottom:var(--safe-b)}
-.nav button{flex:1;padding:16px 0 18px;font-family:var(--ui);font-weight:300;font-size:10px;
-  letter-spacing:.24em;text-transform:uppercase;color:var(--mute);position:relative}
+.nav button{flex:1;padding:17px 0 19px;font-family:var(--ui);font-weight:500;font-size:12px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--mute);position:relative}
 .nav button[aria-current="page"]{color:var(--ink)}
 .nav button[aria-current="page"]::after{content:"";position:absolute;left:50%;top:8px;
-  width:16px;height:1px;background:var(--ink);transform:translateX(-50%)}
+  width:22px;height:2px;background:var(--ink);transform:translateX(-50%)}
 
 /* ---------------- records ---------------- */
 .grid{width:100%;border-collapse:collapse}
-.grid th{font-family:var(--ui);font-weight:300;font-size:9px;letter-spacing:.12em;
+.grid th{font-family:var(--ui);font-weight:500;font-size:11px;letter-spacing:.08em;
   color:var(--mute);padding:0 0 10px;text-align:center;text-transform:uppercase}
 .grid th.lift{text-align:left;width:42%}
 .grid td{padding:11px 0;text-align:center;border-top:1px solid var(--line);
-  font-family:var(--ui);font-weight:300;font-size:13px;color:var(--ink2);
+  font-family:var(--ui);font-weight:400;font-size:15px;color:var(--ink);
   font-variant-numeric:tabular-nums}
-.grid td.lift{text-align:left;font-family:var(--body);font-size:16px;color:var(--ink);
+.grid td.lift{text-align:left;font-family:var(--body);font-size:17.5px;color:var(--ink);
   padding-right:10px;line-height:1.25}
 .grid td.best{color:var(--bronze);font-weight:500}
 .grid td.feel{color:var(--slate);font-weight:500}
-.empty{font-size:16px;color:var(--ink2);line-height:1.55;font-style:italic;padding:2px 0 6px}
+.empty{font-size:17px;color:var(--ink2);line-height:1.55;font-style:italic;padding:2px 0 6px}
 .tools{display:flex;gap:8px;margin:14px 0 14px;flex-wrap:wrap}
-.tools button{padding:12px 16px;border:1px solid var(--line2);border-radius:4px;
-  font-family:var(--ui);font-weight:300;font-size:10px;letter-spacing:.15em;
-  text-transform:uppercase;color:var(--ink2)}
+.tools button{padding:13px 16px;border:1px solid var(--line2);border-radius:4px;
+  font-family:var(--ui);font-weight:500;font-size:12px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink)}
 .tools button.danger{color:var(--brick);border-color:#E0CCC4}
 .tools button[hidden]{display:none}
 .fld{display:block;margin:0 0 12px;color:var(--mute)}
 .fld input{display:block;width:100%;margin-top:7px;padding:12px;border:1px solid var(--line2);
-  border-radius:4px;background:var(--surface);font-family:var(--ui);font-weight:300;font-size:16px;color:var(--ink)}
+  border-radius:4px;background:var(--surface);font-family:var(--ui);font-weight:400;font-size:16px;color:var(--ink)}
 .fld input:disabled{color:var(--mute);background:var(--tint)}
-.foot{font-size:15px;color:var(--ink2);line-height:1.55;margin:2px 0 26px}
+.foot{font-size:16.5px;color:var(--ink2);line-height:1.55;margin:2px 0 26px}
 .colophon{color:var(--mute);text-align:center;padding:16px 0 26px;
-  border-top:1px solid var(--line);font-size:9px;letter-spacing:.2em}
+  border-top:1px solid var(--line);font-size:11px;letter-spacing:.14em}
 .toast{position:fixed;left:50%;bottom:calc(84px + var(--safe-b));transform:translate(-50%,12px);
-  background:var(--ink);color:var(--bone);font-family:var(--ui);font-weight:300;font-size:10px;
-  letter-spacing:.15em;text-transform:uppercase;padding:12px 18px;border-radius:4px;
+  background:var(--ink);color:var(--bone);font-family:var(--ui);font-weight:500;font-size:12px;
+  letter-spacing:.1em;text-transform:uppercase;padding:12px 18px;border-radius:4px;
   z-index:60;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -350,6 +350,12 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
     <div class="micro seclabel">Daily practice &middot; last fourteen days</div>
     <div class="fort" id="fort"></div>
     <div class="scalekey micro"><span>Two weeks ago</span><span>Today</span></div>
+    <div class="micro seclabel">Weights in</div>
+    <div class="scale" id="units">
+      <button data-unit="lb">Pounds</button>
+      <button data-unit="kg">Kilograms</button>
+    </div>
+    <p class="foot" style="margin-top:10px">Switching converts every weight already recorded.</p>
     <div class="micro seclabel">Google Sheets</div>
     <p class="foot" id="syncState"></p>
     <label class="fld"><span class="micro">Web app URL</span>
@@ -448,21 +454,35 @@ const MAIN_LIFTS = ["a2","a3","a5","b2","b3","b5","c2"];
 const WEEKS = 20, KEY = "temple.v2", OLD_KEY = "temple.v1";
 
 /* ============================ state ============================ */
-const blank = { week:1, day:"A", unit:"kg", load:{}, sets:{}, feel:{}, head:{}, when:{}, updatedAt:0 };
+const blank = { week:1, day:"A", unit:"lb", unitSet:true, load:{}, sets:{}, feel:{}, head:{}, when:{}, updatedAt:0 };
+let pendingSave = false;
 let S = load();
 
 function load(){
   try{
     const raw = localStorage.getItem(KEY);
-    if(raw) return Object.assign(structuredClone(blank), JSON.parse(raw));
-    /* the earlier eight-week plan stays untouched under its own key; only the unit carries over */
+    if(raw){
+      const st = Object.assign(structuredClone(blank), JSON.parse(raw));
+      /* records kept before the switch to pounds were in kilograms: convert them once */
+      if(!JSON.parse(raw).unitSet){ convertLoads(st, "lb"); st.unitSet = true; pendingSave = true; }
+      return st;
+    }
+    /* the earlier eight-week plan stays untouched under its own key */
     const fresh = structuredClone(blank);
     const old = localStorage.getItem(OLD_KEY);
-    if(old){ const u = JSON.parse(old).unit; if(u) fresh.unit = u; }
     return fresh;
   }catch(e){ return structuredClone(blank); }
 }
 let saveWarned = false;
+function convertLoads(st, to){
+  if(st.unit === to){ return; }
+  const f = to === "lb" ? 2.20462 : 1 / 2.20462;
+  Object.keys(st.load).forEach(k => {
+    if(typeof st.load[k] === "number") st.load[k] = to === "lb" ? Math.round(st.load[k] * f) : Math.round(st.load[k] * f * 2) / 2;
+  });
+  st.unit = to;
+}
+const stepSize = () => S.unit === "lb" ? 5 : 2.5;
 function persist(){
   try{ localStorage.setItem(KEY, JSON.stringify(S)); }
   catch(e){ if(!saveWarned){ saveWarned = true; toast("Storage blocked"); } }
@@ -666,7 +686,10 @@ document.addEventListener("click", ev => {
   if(act === "plus" || act === "minus"){
     const prev = lastLoad(ex.id, S.week);
     const cur = S.load[key] !== undefined ? S.load[key] : (prev ? prev.v : 0);
-    S.load[key] = Math.max(0, Math.round((cur + (act === "plus" ? 2.5 : -2.5)) * 2) / 2);
+    /* snap to the plate step: 44 lb goes up to 45, then 50 */
+    const st = stepSize();
+    const next = act === "plus" ? Math.floor(cur / st + 1e-9) * st + st : Math.ceil(cur / st - 1e-9) * st - st;
+    S.load[key] = Math.max(0, Math.round(next * 2) / 2);
     save(); renderCards();
     return;
   }
@@ -773,7 +796,7 @@ function pull(){
       const R = j.state;
       if(R && (R.updatedAt || 0) > (S.updatedAt || 0)){
         S = Object.assign(structuredClone(blank), R);
-        persist(); renderAll(); toast("Brought in from your sheet");
+        persist(); renderAll(); paintUnits(); toast("Brought in from your sheet");
         SY.dirty = false;
       } else if(SY.dirty || !R || (R.updatedAt || 0) < (S.updatedAt || 0)){
         SY.dirty = true; saveSync();
@@ -936,7 +959,8 @@ $("file").onchange = e => {
   r.onload = () => {
     try{
       S = Object.assign(structuredClone(blank), JSON.parse(r.result));
-      save(); renderAll(); toast("Backup restored");
+      if(!S.unitSet){ convertLoads(S, "lb"); S.unitSet = true; }
+      save(); renderAll(); paintUnits(); toast("Backup restored");
     }catch(err){ toast("That file could not be read"); }
   };
   r.readAsText(f);
@@ -944,7 +968,7 @@ $("file").onchange = e => {
 };
 $("wipe").onclick = () => {
   if(!confirm("Erase every recorded set, weight and score? This cannot be undone.")) return;
-  S = structuredClone(blank); save(); renderAll(); toast("All records erased");
+  S = structuredClone(blank); save(); renderAll(); paintUnits(); toast("All records erased");
 };
 
 let toastT = null;
@@ -959,8 +983,18 @@ if("serviceWorker" in navigator && location.protocol === "https:"){
   window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 }
 
+function paintUnits(){
+  document.querySelectorAll("[data-unit]").forEach(b => b.setAttribute("aria-pressed", b.dataset.unit === S.unit));
+}
+document.querySelectorAll("[data-unit]").forEach(b => b.onclick = () => {
+  if(b.dataset.unit === S.unit) return;
+  convertLoads(S, b.dataset.unit); save(); renderAll(); paintUnits();
+  toast("Weights now in " + (S.unit === "lb" ? "pounds" : "kilograms"));
+});
 renderAll();
+paintUnits();
 paintSync();
+if(pendingSave) save();
 pull();
 </script>
 </body>
